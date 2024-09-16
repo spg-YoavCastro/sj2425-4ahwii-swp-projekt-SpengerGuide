@@ -1,0 +1,1 @@
+# sj2425-4ahwii-swp-projekt-spengerkompass
