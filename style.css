@@ -1,33 +1,146 @@
-h1 {
-    text-align: center;
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+    height: 100%;
 }
-.center-box {
-    height: 300px;
-    width: 80%;
+
+/* Fullscreen Header */
+.fullscreen-header {
+    height: 100vh;
+    background: linear-gradient(45deg, #007bff, #6c757d);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.fullscreen-header h1 {
+    font-size: 10rem; /* Increase font size */
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide text overflow during animation */
+    border-right: 4px solid white; /* Add a blinking cursor */
+    font-family: 'Pacifico', cursive; /* Fancy font */
+    width: 0; /* Start with no width for the typing effect */
+    animation: typing 2s steps(30) 1s forwards, blink 0.5s step-end 2s infinite; /* Adjusted typing speed, and added delay */
+    line-height: 2; /* Adjust line height */
+    padding-bottom: 5px; /* Ensure the bottom of letters like 'g' and 'p' are visible */
+}
+
+/* Typing animation */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 49%; /* Full width of the text */
+    }
+}
+
+/* Blinking cursor animation */
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+    100% {
+        border-color: transparent; /* Cursor stops blinking once typing is complete */
+    }
+}
+
+/* Content Section */
+#content-section {
+    height: 100vh;
     background-color: #f8f9fa;
+}
+
+.container-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%; /* Ensure the box fills the container */
+}
+
+.center-box {
+    width: 80%;
+    height: 500px;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
+    margin-top: 20%;
     justify-content: center;
     align-items: center;
     font-size: 24px;
     text-align: center;
-    margin: auto;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    z-index: 1;
 }
+
+/* Animations for Sliding Content */
+.center-box.hidden-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.center-box.hidden-right {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.center-box.show-from-left {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.center-box.show-from-right {
+    transform: translateX(0);
+    opacity: 1;
+}
+
 .arrows {
     font-size: 40px;
     cursor: pointer;
     user-select: none;
+    position: absolute;
+    color: #333;
+    transition: transform 0.3s ease;
+    z-index: 2;
 }
-.container-box {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 100px;
+
+.arrows:hover {
+    transform: scale(1.2);
 }
-h1
-{
-    margin-top: 20px;
-    margin-bottom: 20px;
+
+/* Arrows positioning */
+.arrows:first-of-type {
+    left: -50px;
+}
+
+.arrows:last-of-type {
+    right: -50px;
+}
+
+/* Navbar and Footer */
+.navbar {
+    transition: background-color 0.5s ease;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    color: #333;
 }
