@@ -66,7 +66,9 @@ body, html {
     position: relative;
     width: 100%; /* Ensure the box fills the container */
 }
-
+.navbar .btn {
+    font-size: 0.9rem;
+}
 .center-box {
     width: 80%;
     height: 500px;
