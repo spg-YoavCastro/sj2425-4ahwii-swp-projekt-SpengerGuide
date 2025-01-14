@@ -14,3 +14,7 @@ h1 {
 .contact-card h5 {
     color: #000000;
 }
+.navbar .btn {
+    font-size: 0.9rem;
+}
+
