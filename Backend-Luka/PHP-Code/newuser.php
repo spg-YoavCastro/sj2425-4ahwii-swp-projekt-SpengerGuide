@@ -30,14 +30,15 @@ echo json_encode($out);
 function _executeUserAdd($dbh,$data){
     require_once './mydb.class.php';
     $aQ = array();
-    $aQ['name'] = htmlspecialchars($data['name']);
+    $aQ['Vorname'] = htmlspecialchars($data['Vorname']);
+    $aQ['Nachname'] = htmlspecialchars($data['Nachname']);
     $aQ['email'] = htmlspecialchars($data['email']);
     $aQ['passwort'] = htmlspecialchars($data['passwort']); // Auslesen der Daten
    
     $c  = new mydb();
     $c->setDB($dbh);
 // SQL-Anweisung
-    $ret = $c->_executeQuery('INSERT into Benutzer (Name, Email, Passwort) VALUES (:name, :email, :passwort)', $aQ);
+    $ret = $c->_executeQuery('INSERT into nutzer (Vorname, Nachname, email, passwort) VALUES (:Vorname, :Nachname, :email, :passwort)', $aQ);
     
     // Rückgabe an die Webseite;
     return array(
