@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 
 
 // SQL to insert data
-$sql = "INSERT INTO MyGuests (firstname, lastname, email)
+$sql = "INSERT INTO MyGuests (Vorname, Nachname, email)
 VALUES ('John', 'Doe', 'john@example.com')";
 
 if ($conn->query($sql) === TRUE) {
