@@ -55,8 +55,11 @@ body, html {
 
 /* Content Section */
 #content-section {
+    background-image: url('/images/testBackgroundImg_Animation.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevents the image from repeating */
     height: 100vh;
-    background-color: #f8f9fa;
 }
 
 .container-box {
@@ -65,26 +68,33 @@ body, html {
     align-items: center;
     position: relative;
     width: 100%; /* Ensure the box fills the container */
+    height: 100%;
 }
 .navbar .btn {
     font-size: 0.9rem;
 }
+
 .center-box {
-    width: 80%;
-    height: 500px;
+    width: 40%;
+    height: 200px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
-    margin-top: 20%;
+    /* margin-top: 20%; */
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 35px;
+    font-weight: bold;
     text-align: center;
     position: relative;
     overflow: hidden;
     transition: transform 0.5s ease, opacity 0.5s ease;
     z-index: 1;
+}
+
+.center-box p {
+    padding-top: 65px;
 }
 
 /* Animations for Sliding Content */
@@ -146,3 +156,33 @@ footer {
     text-align: center;
     color: #333;
 }
+
+/* theme for animation-section on startpage.html (still in work) */
+#animation {
+    background-color: #c1732e;
+    border: 1px solid #000000;
+    box-shadow: 8px 8px #834e22;
+}
+
+/* #betriebsinformatik {
+    background-color: #99e9ff;
+    border: 1px solid #0037ff;
+    box-shadow: 0 4px 8px rgba(123, 0, 255, 0.4);
+} */
+
+
+/* themes for other sections */
+/* 
+
+#gamedesign {}
+
+#informatik {}
+
+#fachschule {}
+
+#interiordesign {}
+
+#medizininformatik {}
+
+#technischesManagement {} */
+
