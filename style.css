@@ -156,6 +156,10 @@ footer {
     text-align: center;
     color: #333;
 }
+.Bilder
+{
+    width: 100%;
+}
 
 /* theme for animation-section on startpage.html (still in work) */
 #animation {
