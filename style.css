@@ -75,8 +75,8 @@ body, html {
 }
 
 .center-box {
-    width: 40%;
-    height: 200px;
+    width: 50%;
+    height: 300px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -189,4 +189,3 @@ footer {
 #medizininformatik {}
 
 #technischesManagement {} */
-

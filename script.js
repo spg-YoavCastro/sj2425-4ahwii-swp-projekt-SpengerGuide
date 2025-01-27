@@ -40,13 +40,13 @@ showContent(currentContentIndex);
 //code for background
 const backgroundImages = {
     animation: '/images/testBackgroundImg_Animation.jpg',
-    betriebsinformatik: '/images/testImg.png',
-    // gamedesign: '/images/',
-    // informatik: '/images/',
-    // fachschule: '/images/',
-    // interiordesign: '/images/',
-    // medizininformatik: '/images/',
-    technischesManagement: '/images/testImg2.png',
+    betriebsinformatik: '/images/testBackgroundImg_Animation.jpg',
+    gamedesign: '/images/testBackgroundImg_Animation.jpg',
+    informatik: '/images/testBackgroundImg_Animation.jpg',
+    fachschule: '/images/testBackgroundImg_Animation.jpg',
+    interiordesign: '/images/testBackgroundImg_Animation.jpg',
+    medizininformatik: '/images/testBackgroundImg_Animation.jpg',
+    technischesManagement: '/images/testBackgroundImg_Animation.jpg',
 };
 
 let currentIndex = 0; // Start at the first center-box
