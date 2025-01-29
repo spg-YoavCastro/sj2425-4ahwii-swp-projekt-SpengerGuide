@@ -146,6 +146,12 @@ body, html {
     z-index: 10;
 }
 
+.bgnav
+{
+    background-color: white;
+    opacity: 70%;
+}
+
 footer {
     background-color: #f8f9fa;
     padding: 20px;
