@@ -93,10 +93,6 @@ body, html {
     z-index: 1;
 }
 
-.center-box p {
-    /* padding-top: 65px; */
-}
-
 /* Animations for Sliding Content */
 .center-box.hidden-left {
     transform: translateX(-100%);
@@ -161,31 +157,50 @@ footer {
     width: 100%;
 }
 
-/* theme for animation-section on startpage.html (still in work) */
-#animation {
-    background-color: #c1732e;
-    border: 1px solid #000000;
-    box-shadow: 8px 8px #834e22;
+#betriebsinformatik {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+} 
+
+#gamedesign {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
 }
 
-/* #betriebsinformatik {
+#informatik {
     background-color: #99e9ff;
-    border: 1px solid #0037ff;
-    box-shadow: 0 4px 8px rgba(123, 0, 255, 0.4);
-} */
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+}
 
+#fachschule {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+}
 
-/* themes for other sections */
-/* 
+#interiordesign {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+}
 
-#gamedesign {}
+#medizininformatik {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+}
 
-#informatik {}
+#technischesManagement {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+} 
 
-#fachschule {}
-
-#interiordesign {}
-
-#medizininformatik {}
-
-#technischesManagement {} */
+#animation {
+    background-color: #99e9ff;
+    border: 1px solid black;
+    box-shadow: 0 8px 16px black;
+}
