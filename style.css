@@ -139,7 +139,6 @@ body, html {
       transform: rotate(360deg);
     }
   }
-  
 
 .center-box {
     width: 50%;
@@ -189,10 +188,18 @@ body, html {
     color: #333;
     transition: transform 0.3s ease;
     z-index: 2;
+    background-color: white;
+    border: solid white 1px;
+    padding-left: 1%;
+    padding-right: 1%;
+    border-radius: 10%;
+    opacity: 70%;
 }
 
 .arrows:hover {
     transform: scale(1.2);
+    opacity: 100%;
+    background-color: lightgray;
 }
 
 /* Arrows positioning */
@@ -230,12 +237,13 @@ footer {
     width: 100%;
 }
 
-#betriebsinformatik {
+#betriebsinformatik, #gamedesign,  #informatik, #fachschule, #interiordesign, #medizininformatik, #technischesManagement, #animation{
     background-color: #99e9ff;
     border: 1px solid black;
     box-shadow: 0 8px 16px black;
 } 
 
+/*
 #gamedesign {
     background-color: #99e9ff;
     border: 1px solid black;
@@ -277,3 +285,4 @@ footer {
     border: 1px solid black;
     box-shadow: 0 8px 16px black;
 }
+*/
