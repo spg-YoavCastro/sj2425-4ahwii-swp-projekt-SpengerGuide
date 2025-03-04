@@ -1,0 +1,40 @@
+.form {
+    border: solid 1px black;
+    border-radius: 10px;
+    width: 30%;
+    padding: 2%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+
+}
+
+input {
+    width: 10px;
+    margin-bottom: 25px;
+}
+
+button {
+    width: 80%;
+    margin-left: 10%;
+    align-items: center;
+    border-radius: 100%;
+
+}
+
+body {
+    background-color: rgb(229, 229, 229);
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 10px 0;
+}
