@@ -4,6 +4,10 @@ function navigateToPage(page) {
     window.location.href = page;
 }
 
+function Log() {
+    window.location.href = "Login/login.html";
+}
+
 // For the arrow navigation (cycling content boxes)
 let currentContentIndex = 0;
 const contentBoxes = document.querySelectorAll('.center-box'); // Get all content boxes

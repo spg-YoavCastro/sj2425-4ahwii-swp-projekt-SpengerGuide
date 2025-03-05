@@ -10,7 +10,7 @@ body, html {
 /* Fullscreen Header */
 .fullscreen-header {
     height: 100vh;
-    background: linear-gradient(45deg, #007bff, #6c757d);
+    background: linear-gradient(180deg, #007bff, #6c757d);
     color: white;
     display: flex;
     justify-content: center;
@@ -54,8 +54,8 @@ body, html {
 }
 
 /* Content Section */
-#content-section {
-    background-image: url('/images/testBackgroundImg_Animation.jpg');
+.content-section {
+    background: linear-gradient(0deg, #007bff, #6c757d);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -70,66 +70,49 @@ body, html {
     width: 100%; /* Ensure the box fills the container */
     height: 100%;
 }
-.navbar .btn {
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 30px;
-    border: 0;
+/*Login Button Anfang*/
+/* From Uiverse.io by Madflows */ 
+.button {
     position: relative;
     overflow: hidden;
-    border-radius: 10rem;
-    transition: all 0.2s;
-    font-weight: bold;
+    height: 3rem;
+    padding: 0 2rem;
+    border-radius: 1.5rem;
+    background: #3d3a4e;
+    background-size: 400%;
+    color: #fff;
+    border: none;
     cursor: pointer;
-    color: rgb(37, 37, 37);
-    z-index: 0;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(90deg, rgba(222, 0, 75, 1) 0%, rgba(191, 70, 255, 1) 49%, rgba(0, 212, 255, 1) 100%);
-    text-decoration: none;
   }
   
-  .navbar .btn:hover {
-    filter: brightness(1.1);
+  .button:hover::before {
+    transform: scaleX(1);
   }
   
-  .navbar .btn:active {
-    transform: scale(0.97);
-  }
-  
-  .navbar .btn .hoverEffect {
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .button-content {
+    position: relative;
     z-index: 1;
   }
   
-  .navbar .btn .hoverEffect div {
+  .button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    width: 100%;
+    height: inherit;
+    border-radius: inherit;
     background: linear-gradient(
-      90deg,
-      rgba(222, 0, 75, 1) 0%,
-      rgba(191, 70, 255, 1) 49%,
-      rgba(0, 212, 255, 1) 100%
+      82.3deg,
+      black 10%,
+      blue 90%
     );
-    border-radius: 40rem;
-    width: 10rem;
-    height: 10rem;
-    transition: 0.4s;
-    filter: blur(20px);
-    animation: effect infinite 3s linear;
-    opacity: 0.5;
+    transition: all 0.475s;
   }
   
-  .navbar .btn:hover .hoverEffect div {
-    width: 8rem;
-    height: 8rem;
-  }
+/*Login Button Ende*/
   
   @keyframes effect {
     0% {
@@ -211,6 +194,13 @@ body, html {
     right: -50px;
 }
 
+.center-box {
+    height: 65vh;
+}
+
+img {
+    
+}
 /* Navbar and Footer */
 .navbar {
     transition: background-color 0.5s ease;
@@ -241,48 +231,4 @@ footer {
     background-color: #99e9ff;
     border: 1px solid black;
     box-shadow: 0 8px 16px black;
-} 
-
-/*
-#gamedesign {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
 }
-
-#informatik {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
-}
-
-#fachschule {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
-}
-
-#interiordesign {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
-}
-
-#medizininformatik {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
-}
-
-#technischesManagement {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
-} 
-
-#animation {
-    background-color: #99e9ff;
-    border: 1px solid black;
-    box-shadow: 0 8px 16px black;
-}
-*/
