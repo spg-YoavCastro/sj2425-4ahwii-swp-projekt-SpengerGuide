@@ -124,22 +124,16 @@ body, html {
   }
 
 .center-box {
-    width: 50%;
-    height: 300px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 3%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 1);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    overflow: auto;
+    position: relative;
     display: flex;
-    /* margin-top: 20%; */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 35px;
-    font-weight: bold;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.5s ease, opacity 0.5s ease;
-    z-index: 1;
 }
 
 /* Animations for Sliding Content */
@@ -192,14 +186,6 @@ body, html {
 
 .arrows:last-of-type {
     right: -50px;
-}
-
-.center-box {
-    height: 65vh;
-}
-
-img {
-    
 }
 /* Navbar and Footer */
 .navbar {
