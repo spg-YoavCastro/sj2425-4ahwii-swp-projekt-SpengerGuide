@@ -1,8 +1,8 @@
 function Reg()
 {
     window.location.href = "../Signup/signup.html";
-
 }
+
 function pwzeigen() {
     let pw = document.getElementById("password");
 
@@ -13,4 +13,9 @@ function pwzeigen() {
     } else {
         pw.type = "text";
     }
+}
+
+
+function Log() {
+    window.location.href = "../startpage.html"; // Provisorische Funktion bis Luka DB verknüpft
 }
