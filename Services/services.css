@@ -12,13 +12,21 @@ h1 {
 }
 .card {
     margin-bottom: 20px;
+    border: solid black 1px;
+    border-radius: 10px;
 }
 .navbar .btn {
     font-size: 0.9rem;
 }
+.bgnav {
+    background-color: white;
+}
 footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background-color: #f8f9fa;
-    padding: 20px;
     text-align: center;
-    color: #333;
+    padding: 10px 0;
 }

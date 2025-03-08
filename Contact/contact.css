@@ -11,13 +11,16 @@ h1 {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 1);
-    background-color: lightblue;
+    background-color: white;
 }
 .contact-card h5 {
     color: #000000;
 }
 .navbar .btn {
     font-size: 0.9rem;
+}
+.bgnav {
+    background-color: white;
 }
 footer {
     position: fixed;
