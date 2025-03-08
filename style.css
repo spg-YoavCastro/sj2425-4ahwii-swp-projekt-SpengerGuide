@@ -15,7 +15,7 @@ img {
 /* Fullscreen Header */
 .fullscreen-header {
     height: 100vh;
-    background: linear-gradient(180deg, #007bff, #6c757d);
+    background: linear-gradient(0deg, lightblue, #6c757d);
     color: white;
     display: flex;
     justify-content: center;
@@ -34,7 +34,7 @@ img {
     border-right: 4px solid white; /* Add a blinking cursor */
     font-family: 'Pacifico', cursive; /* Fancy font */
     width: 0; /* Start with no width for the typing effect */
-    animation: typing 2s steps(100) 1s forwards, blink 0.5s step-end 2s infinite; /* Adjusted typing speed, and added delay */
+    animation: typing 3s steps(500) 1s forwards, blink 0.5s step-end 2s infinite; /* Adjusted typing speed, and added delay */
     line-height: 2; /* Adjust line height */
     padding-bottom: 5px; /* Ensure the bottom of letters like 'g' and 'p' are visible */
 }
@@ -61,7 +61,7 @@ img {
 
 /* Content Section */
 .content-section {
-    background: linear-gradient(0deg, #007bff, #6c757d);
+    background: linear-gradient(180deg, lightblue, #6c757d);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat; /* Prevents the image from repeating */
