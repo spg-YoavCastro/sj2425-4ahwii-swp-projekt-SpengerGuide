@@ -14,3 +14,7 @@ function pwzeigen() {
         pw.type = "text";
     }
 }
+
+function Log() {
+    window.location.href = "../Login/login.html";
+}

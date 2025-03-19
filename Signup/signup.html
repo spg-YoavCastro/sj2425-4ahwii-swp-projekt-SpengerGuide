@@ -14,6 +14,7 @@
         <h2>Registrieren</h2>
         <p>Bitte geben Sie Ihre Daten ein</p>
         <br>
+        
         <form action="process_signup.php" method="POST">
             <div class="mb-3">
                 <label for="firstname" class="form-label">First Name</label>
@@ -27,17 +28,18 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
             <div class="mb-3">
                 <input class="checkbox" onclick="pwzeigen()" type="checkbox" name="showpw" id="cb0">
                 <label class="showpw">Passwort anzeigen</label>
             </div>
+            <div class="btnc">
+                <button type="submit" class="btn btn-primary">Registrieren</button>
+            </div>
         </form>
-        <div class="btnc">
-            <button type="submit" class="btn btn-primary">Registrieren</button>
-        <p></p>
-        <button onclick="Log()" type="submit" class="btn btn-primary">Login</button>
         </div>
     </div>
     <footer class="bg-light text-center py-4">

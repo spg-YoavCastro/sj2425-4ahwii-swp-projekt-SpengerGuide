@@ -1,48 +1,37 @@
-<?php //by luka & Marius
+<?php
+// Fehlermeldungen aktivieren
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-/* 
- * Service Typ : POST
- * Erstellt einen neuen Eintrag
- */
+// Datenbankverbindung herstellen
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "test";
 
-include('./common.php');
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-$data = json_decode(file_get_contents('php://input'), true); // JSON wird konvertiert
-
-/*
- * Funktionen aufrufen
- */
-
-$dbh = createDatabaseHandle();
-$out = _executeUserAdd($dbh,$data);
-$out['http_status'] = 200;
-
-/*
- * AUSGABE 
- */
-
-header('X-PHP-Response-Code: '.$out['http_status'], true, $out['http_status']);
-header('X-SX-Server: v=20240101');
-header('Content-Type: application/json; charset=UTF-8',true, $out['http_status']);
-header('Cache-Control: no-cache, must-revalidate');
-echo json_encode($out);
-// Daten in die Datenbank einfügen
-function _executeUserAdd($dbh,$data){
-    require_once './mydb.class.php';
-    $aQ = array();
-    $aQ['name'] = htmlspecialchars($data['name']);
-    $aQ['email'] = htmlspecialchars($data['email']);
-    $aQ['passwort'] = htmlspecialchars($data['passwort']); // Auslesen der Daten
-   
-    $c  = new mydb();
-    $c->setDB($dbh);
-// SQL-Anweisung
-    $ret = $c->_executeQuery('INSERT into Benutzer (Name, Email, Passwort) VALUES (:name, :email, :passwort)', $aQ);
-    
-    // Rückgabe an die Webseite;
-    return array(
-            'message'       => 'Benutzer erstellt',
-            'error'         => '',
-            'data'          => $ret
-            );
+// Überprüfen, ob die Verbindung erfolgreich war
+if ($conn->connect_error) {
+    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
 }
+
+// Daten aus dem Formular auslesen
+$firstname = htmlspecialchars($_POST['firstname']);
+$lastname = htmlspecialchars($_POST['lastname']);
+$email = htmlspecialchars($_POST['email']);
+$password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Passwort hashen
+
+// SQL-Abfrage zum Einfügen der Daten
+$sql = "INSERT INTO nutzer (Vorname, Nachname, email, passwort) VALUES ('$firstname', '$lastname', '$email', '$password')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Registrierung erfolgreich!";
+} else {
+    echo "Fehler: " . $sql . "<br>" . $conn->error;
+}
+
+// Verbindung schließen
+$conn->close();
+?>
