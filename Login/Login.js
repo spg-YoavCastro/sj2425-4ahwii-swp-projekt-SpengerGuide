@@ -17,5 +17,5 @@ function pwzeigen() {
 
 
 function Log() {
-    window.location.href = "../startpage.html"; // Provisorische Funktion bis Luka DB verknüpft
+    window.location.href = "../index.html"; // Provisorische Funktion bis Luka DB verknüpft
 }
