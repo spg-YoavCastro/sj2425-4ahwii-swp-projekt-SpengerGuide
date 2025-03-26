@@ -1,5 +1,7 @@
+/*Body Background intern gestyled*/
+
 footer {
-    position: fixed;
+    position: static;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -7,31 +9,66 @@ footer {
     text-align: center;
     padding: 10px 0;
 }
-
+.navbar {
+    background-color: white;
+    margin-bottom: 20px;
+}
 #content-section {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 200px); /* Bildschirmhöhe minus Header/Footer */
+    min-height: calc(100vh - 200px); 
 }
 
 .content-inhalt {
     display: flex;
-    flex-direction: column;     /* Vertikal stapeln */
-    align-items: center;        /* Horizontal zentrieren */
-    justify-content: center;    /* Optional: Vertikal zentrieren */
-    gap: 20px;                  /* Abstand zwischen den Boxen */
+    flex-direction: column;     
+    align-items: center;        
+    justify-content: center;    
+    gap: 20px;                  
     padding: 20px;
-    min-height: 60vh;           /* Genug Höhe für zentrierten Look */
+    min-height: 60vh;           
 }
 
 .cont {
     border: 1px solid black;
     border-radius: 10px;
     padding: 15px 30px;
-    width: fit-content;         /* Breite je nach Inhalt */
+    width: fit-content;         
     text-align: center;
     background-color: #f0f0f0;
     font-weight: bold;
     width: 70rem;
+}
+
+/*Aufklappen*/
+
+.cont {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 15px 20px;
+    width: 80%;
+    background-color: #f0f0f0;
+    text-align: left;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.cont-title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.extra-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+/* Wenn offen */
+.cont.open .extra-content {
+    max-height: 500px; /* groß genug für Inhalt */
 }
