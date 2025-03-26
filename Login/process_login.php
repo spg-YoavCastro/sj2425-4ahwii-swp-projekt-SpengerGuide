@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
         // Login erfolgreich
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
-        header("Location: ../startpage.html"); // Weiterleitung
+        header("Location: ../index.html"); // Weiterleitung
         exit();
     } else {
         echo "Falsches Passwort!";
