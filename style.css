@@ -191,3 +191,23 @@ footer {
     border: 1px solid black;
     box-shadow: 0 8px 16px black;
 }
+
+/* replace the Spengerguide text with img of logo when screenwidth is smaller than 990px */
+#headerLogoText {
+    display: block;
+}
+
+#headerLogoImg {
+    display: none;
+    max-height: 200px;
+}
+
+@media (max-width: 990px) {
+    #headerLogoText {
+        display: none;
+    }
+
+    #headerLogoImg {
+        display: block;
+    }
+}
