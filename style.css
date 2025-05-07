@@ -162,6 +162,14 @@ img {
     z-index: 10;
 }
 
+#navbarNav {
+    padding-left: 10px;
+}
+
+#navbarDropdownSmall {
+    margin-right: 10px;
+}
+
 .bgnav
 {
     background-color: white;
