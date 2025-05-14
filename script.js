@@ -5,7 +5,7 @@ function navigateToPage(page) {
 }
 
 function Log() {
-    window.location.href = "/Login";
+    window.location.href = "Login/login.html";
 }
 
 // For the arrow navigation (cycling content boxes)
