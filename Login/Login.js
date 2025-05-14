@@ -1,21 +1,13 @@
-function Reg()
-{
-    window.location.href = "../Signup/signup.html";
-}
+// Passwort-Sichtbarkeit toggeln
+document.getElementById("showPassword").addEventListener("change", function() {
+    const passwordField = document.getElementById("password");
+    passwordField.type = this.checked ? "text" : "password";
+});
 
-function pwzeigen() {
-    let pw = document.getElementById("password");
-
-
-    if (pw.type === "text") {
-        pw.type = "password";
-        
-    } else {
-        pw.type = "text";
+// Formular-Validierung
+document.querySelector("form").addEventListener("submit", function(e) {
+    if (!this.checkValidity()) {
+        e.preventDefault();
+        alert("Bitte füllen Sie alle Felder aus!");
     }
-}
-
-
-function Log() {
-    window.location.href = "../index.html"; // Provisorische Funktion bis Luka DB verknüpft
-}
+});
