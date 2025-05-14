@@ -15,20 +15,24 @@
 <body>
     <!-- Fullscreen Header -->
     <header class="fullscreen-header">
-        <h1>Spengerguide</h1>
+        <h1 id="headerLogoText">Spengerguide</h1>
+        <!-- todo: delete background of the logo? -->
+        <img src="images/logo_current.png" id="headerLogoImg"> 
     </header>
 
     <!-- Navbar (Copy the same navbar in all pages) -->
     <nav class="navbar navbar-expand-lg navbar-light bgnav">
         <div class="container-fluid">
-            <button onclick="Log()" class="button">
-                <span class="button-content">Login </span>
+            <button onclick="Log()" class="button me-2">
+                <span class="button-content">Login</span>
+            </button>
+            <!--hamburger menu -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <div class="navbarToggler"><span class="navbar-toggler-icon"></span></div>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
@@ -39,7 +43,7 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Abteilungen
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="departmentsDropdown" id="navbarDropdownSmall">
                         <li><a class="dropdown-item" href="ContentBoxes/content1.html">Animation</a></li>
                         <li><a class="dropdown-item" href="ContentBoxes/content3.html">Betriebsinformatik</a></li>
                         <li><a class="dropdown-item" href="ContentBoxes/content4.html">Gamedesign</a></li>
