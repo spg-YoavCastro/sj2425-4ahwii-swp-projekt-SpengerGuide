@@ -211,3 +211,53 @@ footer {
         display: block;
     }
 }
+
+
+/* resize images (and edit styles (no background color, change arrows ...)) when the screen is max. 750px wide */
+@media (max-width: 750px) {
+    .container-box {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .center-box {
+        width: 100%;
+        margin-bottom: 20px;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .center-box h1 {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .Bilder {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .arrows {
+        display: block;
+        position: absolute;
+        top: auto;
+        z-index: 5;
+        background-color: transparent;
+        border: none !important;
+        color: #ffffff;
+        opacity: 100%;
+        font-size: 30px;
+    }
+
+    .arrows:first-of-type {
+        left: 10px;
+    }
+
+    .arrows:last-of-type {
+        right: 10px;
+    }
+}
