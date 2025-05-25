@@ -1,66 +1,56 @@
 <?php
-// ==================== KONFIGURATION ====================
-$db_host = "127.0.0.1";
-$db_user = "root";
-$db_pass = "";
-$db_name = "test";
-$db_table = "nutzer"; // Deine Tabelle
-
-// ==================== SESSION START ====================
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+header('Content-Type: application/json'); // Wichtig für AJAX
 
-// ==================== DATENBANKVERBINDUNG ====================
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+// Debugging
+file_put_contents('login.log', print_r($_POST, true), FILE_APPEND);
 
-if ($conn->connect_error) {
-    die("Datenbankverbindung fehlgeschlagen: " . $conn->connect_error);
+// Datenbankverbindung
+$db = new mysqli("127.0.0.1", "root", "", "test");
+if ($db->connect_error) {
+    die(json_encode(['status' => 'error', 'message' => 'Datenbankverbindung fehlgeschlagen']));
 }
 
-// ==================== LOGIK ====================
+// Login-Logik
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Eingaben säubern
-    $email = $conn->real_escape_string($_POST['email']);
-    $password = $_POST['password']; // Rohpasswort (wird gehasht verglichen)
+    $email = $db->real_escape_string($_POST['email']);
+    $password = $_POST['password'];
 
-    // SQL mit Prepared Statement
-    $sql = "SELECT id, Vorname, Nachname, email, passwort FROM $db_table WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    
-    if (!$stmt) {
-        die("SQL-Fehler: " . $conn->error);
-    }
-
+    // 1. Prüfe ob Nutzer existiert
+    $stmt = $db->prepare("SELECT id, passwort FROM nutzer WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
-        
-        // Passwortprüfung
-        if (password_verify($password, $user['passwort'])) {
-            // Login erfolgreich
-            $_SESSION['user'] = [
-                'id' => $user['id'],
-                'vorname' => $user['Vorname'],
-                'nachname' => $user['Nachname'],
-                'email' => $user['email']
-            ];
-            
-            header("Location: dashboard.php");
-            exit();
-        }
+    if ($result->num_rows === 0) {
+        // Nutzer nicht gefunden
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Kein Konto mit dieser E-Mail gefunden'
+        ]);
+        exit();
     }
-    
-    // Login fehlgeschlagen
-    $_SESSION['login_error'] = "Falsche Email oder Passwort!";
-    header("Location: login.html");
+
+    // 2. Passwort prüfen
+    $user = $result->fetch_assoc();
+    if (!password_verify($password, $user['passwort'])) {
+        // Falsches Passwort
+        echo json_encode([
+            'status' => 'error', 
+            'message' => 'Falsches Passwort'
+        ]);
+        exit();
+    }
+
+    // 3. Erfolg
+    $_SESSION['user_id'] = $user['id'];
+    echo json_encode([
+        'status' => 'success',
+        'redirect' => '/Spengerguide/dashboard.php' // Weiterleitungsziel
+    ]);
     exit();
 }
 
-// Falls direkt aufgerufen
-header("Location: login.html");
-exit();
+// Fallback
+echo json_encode(['status' => 'error', 'message' => 'Ungültige Anfrage']);
 ?>
