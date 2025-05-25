@@ -1,22 +1,16 @@
 <?php
-session_start([
-    'cookie_path' => '/Spengerguide/'
-]);
-
+session_start();
 header('Content-Type: application/json');
 
 $response = [
-    'loggedIn' => false,
+    'loggedIn' => isset($_SESSION['user_id']),
     'user' => null
 ];
 
 if (isset($_SESSION['user_id'])) {
-    $response = [
-        'loggedIn' => true,
-        'user' => [
-            'name' => $_SESSION['user_name'],
-            'email' => $_SESSION['user_email']
-        ]
+    $response['user'] = [
+        'name' => $_SESSION['user_name'] ?? 'Benutzer',
+        'email' => $_SESSION['user_email'] ?? ''
     ];
 }
 
