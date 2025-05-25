@@ -48,4 +48,14 @@ document.querySelector("form").addEventListener("submit", async function(e) {
         submitBtn.disabled = false;
         submitBtn.textContent = "Login";
     }
+
+// Im Erfolgsfall:
+if (data.status === 'success') {
+    if (data.login_update) {
+        localStorage.setItem('isLoggedIn', 'true');
+    }
+    window.location.href = data.redirect;
+}
+
+
 });

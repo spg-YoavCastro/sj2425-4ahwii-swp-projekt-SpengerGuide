@@ -12,6 +12,55 @@
     <title>Spengerguide</title>
 </head>
 
+
+
+
+
+ <!-- Luka-Backend -->
+<script>
+// Login-Status prüfen und anzeigen
+document.addEventListener('DOMContentLoaded', function() {
+    // Elemente auswählen
+    const loginBtn = document.querySelector('#navbarLoginElement');
+    const logoutBtn = document.querySelector('#navbarLogoutElement');
+    
+    // Prüfe ob eingeloggt (vereinfachte Version)
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (isLoggedIn) {
+        // Login ausblenden, Logout anzeigen
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'block';
+        
+        // Statusanzeige erstellen
+        const statusDiv = document.createElement('div');
+        statusDiv.innerHTML = `
+            <span style="color: green; margin-right: 15px;">
+                <i class="bi bi-person-check"></i> Eingeloggt
+            </span>
+        `;
+        
+        // In Navbar einfügen
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            navbar.insertBefore(statusDiv, navbar.firstChild);
+        }
+    } else {
+        // Login anzeigen, Logout ausblenden
+        if (loginBtn) loginBtn.style.display = 'block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+    }
+});
+</script>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+ <!-- Luka-Backend -->
+
+
+
+
+
 <body>
     <!-- Fullscreen Header -->
     <header class="fullscreen-header">
