@@ -111,3 +111,41 @@ function prevContent() {
 
 // Initialize the first view
 updateContent();
+
+<script>
+// Login-Status prüfen
+document.addEventListener('DOMContentLoaded', function() {
+    const loginBtn = document.getElementById('navbarLoginElement');
+    const logoutBtn = document.getElementById('navbarLogoutElement');
+    
+    // Initial: Logout ausblenden
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    
+    // Prüfe Session-Status via AJAX
+    fetch('/Spengerguide/Login/session_status.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.loggedIn) {
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'block';
+                
+                const statusDiv = document.createElement('div');
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> Eingeloggt als ${data.user_name}
+                    </span>`;
+                
+                const navbar = document.querySelector('.navbar');
+                if (navbar) navbar.prepend(statusDiv);
+            }
+        });
+});
+
+// Logout-Funktion
+if (document.getElementById('navbarLogoutElement')) {
+    document.getElementById('navbarLogoutElement').onclick = function() {
+        fetch('/Spengerguide/Login/logout.php')
+            .then(() => window.location.reload());
+    };
+}
+</script>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,78 +9,108 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Spengerguide</title>
-</head>
-
-
-
-
-
- <!-- Luka-Backend -->
-<script>
-// Login-Status prüfen und anzeigen
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Verbessertes Login-System -->
+    <script>
+// Verbessertes Login-System
 document.addEventListener('DOMContentLoaded', function() {
     // Elemente auswählen
-    const loginBtn = document.querySelector('#navbarLoginElement');
-    const logoutBtn = document.querySelector('#navbarLogoutElement');
+    const loginBtn = document.getElementById('navbarLoginElement');
+    const logoutBtn = document.getElementById('navbarLogoutElement');
     
-    // Prüfe ob eingeloggt (vereinfachte Version)
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    
-    if (isLoggedIn) {
-        // Login ausblenden, Logout anzeigen
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'block';
-        
-        // Statusanzeige erstellen
-        const statusDiv = document.createElement('div');
-        statusDiv.innerHTML = `
-            <span style="color: green; margin-right: 15px;">
-                <i class="bi bi-person-check"></i> Eingeloggt
-            </span>
-        `;
-        
-        // In Navbar einfügen
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            navbar.insertBefore(statusDiv, navbar.firstChild);
-        }
-    } else {
-        // Login anzeigen, Logout ausblenden
-        if (loginBtn) loginBtn.style.display = 'block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
+    // Login-Status prüfen und UI aktualisieren
+    function updateLoginStatus() {
+        fetch('/Spengerguide/Login/session_status.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Login Status:", data);
+                
+                if (data.loggedIn) {
+                    // Erfolgreich eingeloggt
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+                    
+                    // Statusanzeige
+                    let statusDiv = document.getElementById('loginStatusDiv');
+                    if (!statusDiv) {
+                        statusDiv = document.createElement('div');
+                        statusDiv.id = 'loginStatusDiv';
+                        const navbar = document.querySelector('.navbar');
+                        if (navbar) {
+                            navbar.insertBefore(statusDiv, navbar.firstChild);
+                        }
+                    }
+                    statusDiv.innerHTML = `
+                        <span style="color: green; margin-right: 15px;">
+                            <i class="bi bi-person-check"></i> Eingeloggt als ${data.userName || 'Benutzer'}
+                        </span>
+                    `;
+                } else {
+                    // Nicht eingeloggt
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    const statusDiv = document.getElementById('loginStatusDiv');
+                    if (statusDiv) statusDiv.remove();
+                }
+            })
+            .catch(error => {
+                console.error("Fehler beim Statuscheck:", error);
+            });
     }
+
+    // Login-Button Handler
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            window.location.href = '/Spengerguide/Login/login.html';
+        });
+    }
+
+    // Logout-Button Handler
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            fetch('/Spengerguide/Login/logout.php')
+                .then(response => response.json())
+                .then(() => {
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.reload();
+                })
+                .catch(error => console.error("Logout fehlgeschlagen:", error));
+        });
+    }
+
+    // Initialen Status prüfen
+    updateLoginStatus();
+    
+    // Regelmäßig Status prüfen (alle 2 Minuten)
+    setInterval(updateLoginStatus, 120000);
 });
 </script>
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
- <!-- Luka-Backend -->
-
-
-
-
+</head>
 
 <body>
     <!-- Fullscreen Header -->
     <header class="fullscreen-header">
         <h1 id="headerLogoText">Spengerguide</h1>
-        <!-- todo: delete background of the logo? -->
         <img src="images/logo_current.png" id="headerLogoImg"> 
     </header>
 
-    <!-- Navbar (Copy the same navbar in all pages) -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bgnav">
         <div class="container-fluid">
-            <button onclick="Log()" class="button me-2" id="navbarLoginElement">
+            <button class="button me-2" id="navbarLoginElement">
                 <span class="button-content">Login</span>
             </button>
 
-            <!-- todo: add dropdown menu with signout option? -->
-            <button class="button me-2" id="navbarLogoutElement">
+            <button class="button me-2" id="navbarLogoutElement" style="display: none;">
                 <span class="button-content">Abmelden</span>
             </button>
 
-            <!--hamburger menu -->
+            <!-- Hamburger Menu -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -91,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.html" aria-current="page">Start</a> <!-- Home link -->
+                    <a class="nav-link active" href="index.html" aria-current="page">Start</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -110,55 +139,54 @@ document.addEventListener('DOMContentLoaded', function() {
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
+                    <a class="nav-link" href="Q&A/q&a.html">Q&A</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Services/service.html">Dienste</a> <!-- Services link -->
+                    <a class="nav-link" href="Services/service.html">Dienste</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Contact/contact.html">Kontakt</a> <!-- Contact link -->
+                    <a class="nav-link" href="Contact/contact.html">Kontakt</a>
                 </li>
             </ul>
-        </div>
         </div>
     </nav>
 
     <!-- Content Section -->
     <section class="content-section">
         <div class="container container-box">
-                <span class="arrows" onclick="prevContent()">&#10094;</span>
-                <div class="center-box" id="animation" onclick="navigateToPage('ContentBoxes/content1.html')">
-                    <h1 class="contentBoxes">Animation</h1>
-                    <img class="Bilder" src="./Bilder/Animation.jpg" alt="">
-                </div>
-                <div class="center-box" id="betriebsinformatik" onclick="navigateToPage('ContentBoxes/content3.html')">
-                    <h1>Betriebsinformatik</h1>
-                    <img class="Bilder" id="shadow" src="./Bilder/Betriebsinformatik.jpg" alt="">
-                </div>
-                <div class="center-box" id="gamedesign" onclick="navigateToPage('ContentBoxes/content4.html')">
-                    <h1>Gamedesign</h1>
-                    <img class="Bilder" src="./Bilder/Gamedesign.jpg" alt="">
-                </div>
-                <div class="center-box" id="informatik" onclick="navigateToPage('ContentBoxes/content2.html')">
-                    <h1>Informatik</h1>
-                    <img class="Bilder" src="./Bilder/IT.jpg" alt="">
-                </div>
-                <div class="center-box" id="fachschule" onclick="navigateToPage('ContentBoxes/content8.html')">
-                    <h1>Informationstechnik - Fachschule</h1>
-                    <img class="Bilder" src="./Bilder/ITFAachschule.jpg" alt="">
-                </div>
-                <div class="center-box" id="interiordesign" onclick="navigateToPage('ContentBoxes/content7.html')">
-                    <h1>Interior- und Surfacedesign</h1>
-                    <img class="Bilder" src="./Bilder/IuS.jpg" alt="">
-                </div>
-                <div class="center-box" id="medizininformatik" onclick="navigateToPage('ContentBoxes/content5.html')">
-                    <h1>Medizininformatik</h1>
-                    <img class="Bilder" src="./Bilder/MI.jpg" alt="">
-                </div>
-                <div class="center-box" id="technischesManagement" onclick="navigateToPage('ContentBoxes/content6.html')">
-                    <h1>Technisches Management</h1>
-                    <img class="Bilder" src="./Bilder/TMUU.jpg" alt="">
-                </div>
+            <span class="arrows" onclick="prevContent()">&#10094;</span>
+            <div class="center-box" id="animation" onclick="navigateToPage('ContentBoxes/content1.html')">
+                <h1 class="contentBoxes">Animation</h1>
+                <img class="Bilder" src="./Bilder/Animation.jpg" alt="">
+            </div>
+            <div class="center-box" id="betriebsinformatik" onclick="navigateToPage('ContentBoxes/content3.html')">
+                <h1>Betriebsinformatik</h1>
+                <img class="Bilder" id="shadow" src="./Bilder/Betriebsinformatik.jpg" alt="">
+            </div>
+            <div class="center-box" id="gamedesign" onclick="navigateToPage('ContentBoxes/content4.html')">
+                <h1>Gamedesign</h1>
+                <img class="Bilder" src="./Bilder/Gamedesign.jpg" alt="">
+            </div>
+            <div class="center-box" id="informatik" onclick="navigateToPage('ContentBoxes/content2.html')">
+                <h1>Informatik</h1>
+                <img class="Bilder" src="./Bilder/IT.jpg" alt="">
+            </div>
+            <div class="center-box" id="fachschule" onclick="navigateToPage('ContentBoxes/content8.html')">
+                <h1>Informationstechnik - Fachschule</h1>
+                <img class="Bilder" src="./Bilder/ITFAachschule.jpg" alt="">
+            </div>
+            <div class="center-box" id="interiordesign" onclick="navigateToPage('ContentBoxes/content7.html')">
+                <h1>Interior- und Surfacedesign</h1>
+                <img class="Bilder" src="./Bilder/IuS.jpg" alt="">
+            </div>
+            <div class="center-box" id="medizininformatik" onclick="navigateToPage('ContentBoxes/content5.html')">
+                <h1>Medizininformatik</h1>
+                <img class="Bilder" src="./Bilder/MI.jpg" alt="">
+            </div>
+            <div class="center-box" id="technischesManagement" onclick="navigateToPage('ContentBoxes/content6.html')">
+                <h1>Technisches Management</h1>
+                <img class="Bilder" src="./Bilder/TMUU.jpg" alt="">
+            </div>
             <span class="arrows" onclick="nextContent()">&#10095;</span>
         </div>
     </section>
@@ -172,5 +200,4 @@ document.addEventListener('DOMContentLoaded', function() {
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
