@@ -23,9 +23,15 @@
     <!-- Navbar (Copy the same navbar in all pages) -->
     <nav class="navbar navbar-expand-lg navbar-light bgnav">
         <div class="container-fluid">
-            <button onclick="Log()" class="button me-2">
+            <button onclick="Log()" class="button me-2" id="navbarLoginElement">
                 <span class="button-content">Login</span>
             </button>
+
+            <!-- todo: add dropdown menu with signout option? -->
+            <button class="button me-2" id="navbarLogoutElement">
+                <span class="button-content">Abmelden</span>
+            </button>
+
             <!--hamburger menu -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"

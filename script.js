@@ -1,3 +1,21 @@
+//todo: replace this with actual authentification logic
+let isLoggedIn = true;
+
+window.addEventListener('DOMContentLoaded', () => {
+    const loginButton = document.getElementById('navbarLoginElement');
+    const logoutButton = document.getElementById('navbarLogoutElement');
+
+    //if user is logged in, hide the "Login" button in the navbar; if not, hide "Abmelden"
+    if (isLoggedIn) {
+        loginButton.style.display = 'none';
+        logoutButton.style.display = 'block';
+    } else {
+        loginButton.style.display = 'block';
+        logoutButton.style.display = 'none';
+    }
+});
+
+
 // Function to navigate to a local page when a content box is clicked
 function navigateToPage(page) {
     // Redirect to the specified local page
