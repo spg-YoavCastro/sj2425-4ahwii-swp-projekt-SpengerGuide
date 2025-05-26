@@ -1,6 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Login-System für alle Seiten -->
+<script>
+// Einheitliche Login-Logik für gesamte Website
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Session-Status prüfen
+    function checkLoginStatus() {
+        fetch('/Spengerguide/Login/session_status.php', {
+            credentials: 'include' // Wichtig für Cookies
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            updateUI(data);
+        })
+        .catch(error => console.error("Login-Check failed:", error));
+    }
+
+    // 2. UI aktualisieren
+    function updateUI(data) {
+        const loginBtn = document.getElementById('navbarLoginElement');
+        const logoutBtn = document.getElementById('navbarLogoutElement');
+        
+        if (data.loggedIn && data.user) {
+            // Eingeloggt
+            localStorage.setItem('isLoggedIn', 'true');
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (logoutBtn) logoutBtn.style.display = 'block';
+            
+            updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+        } else {
+            // Ausgeloggt
+            localStorage.removeItem('isLoggedIn');
+            if (loginBtn) loginBtn.style.display = 'block';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            removeStatusDisplay();
+        }
+    }
+
+    // 3. Status-Anzeige erstellen/aktualisieren
+    function updateStatusDisplay(text) {
+        let statusDiv = document.getElementById('loginStatusDiv');
+        if (!statusDiv) {
+            statusDiv = document.createElement('div');
+            statusDiv.id = 'loginStatusDiv';
+            statusDiv.className = 'login-status';
+            document.querySelector('.navbar').prepend(statusDiv);
+        }
+        statusDiv.innerHTML = `
+            <span style="color: green; margin-right: 15px;">
+                <i class="bi bi-person-check"></i> ${text}
+            </span>
+        `;
+    }
+
+    // 4. Status-Anzeige entfernen
+    function removeStatusDisplay() {
+        const statusDiv = document.getElementById('loginStatusDiv');
+        if (statusDiv) statusDiv.remove();
+    }
+
+    // 5. Event-Handler für Buttons
+    function setupEventListeners() {
+        // Login-Button
+        const loginBtn = document.getElementById('navbarLoginElement');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+                window.location.href = '/Spengerguide/Login/login.html';
+            });
+        }
+        
+        // Logout-Button
+        const logoutBtn = document.getElementById('navbarLogoutElement');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                fetch('/Spengerguide/Login/logout.php', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                .then(() => {
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.reload();
+                })
+                .catch(error => console.error("Logout failed:", error));
+            });
+        }
+    }
+
+    // Initialisierung
+    checkLoginStatus();
+    setupEventListeners();
+    
+    // Alle 2 Minuten Status prüfen
+    setInterval(checkLoginStatus, 120000);
+});
+</script>
+
+<!-- Bootstrap Icons (falls nicht vorhanden) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<!-- Optional: CSS für Login-Status -->
+<style>
+.login-status {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 0.9rem;
+}
+</style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Betriebsinformatik</title>
