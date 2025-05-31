@@ -112,7 +112,7 @@ function prevContent() {
 // Initialize the first view
 updateContent();
 
-<script>
+
 // Login-Status prüfen
 document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('navbarLoginElement');
@@ -148,4 +148,3 @@ if (document.getElementById('navbarLogoutElement')) {
             .then(() => window.location.reload());
     };
 }
-</script>
