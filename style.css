@@ -213,7 +213,7 @@ footer {
 }
 
 
-/* resize images (and edit styles (no background color, change arrows ...)) when the screen is max. 750px wide */
+/* different styles for different sizes */
 @media (max-width: 750px) {
     .container-box {
         width: 100%;
@@ -259,5 +259,17 @@ footer {
 
     .arrows:last-of-type {
         right: 10px;
+    }
+}
+
+@media (max-width: 300px) {
+    .center-box h1 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 250px) {
+    .center-box h1 {
+        font-size: 15px;
     }
 }
