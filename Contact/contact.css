@@ -1,3 +1,16 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
 
 h1 {
     font-family: 'Pacifico', cursive;
@@ -22,13 +35,12 @@ h1 {
 .bgnav {
     background-color: white;
 }
+
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     background-color: #f8f9fa;
     text-align: center;
     padding: 10px 0;
+    margin-top: auto;
 }
+
 
