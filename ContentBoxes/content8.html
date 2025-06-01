@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,127 @@
     <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    updateUI(data);
+                })
+                .catch(error => console.error("Login-Check failed:", error));
+            }
+
+            function updateUI(data) {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+
+                if (data.loggedIn && data.user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+
+                    updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+                } else {
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    removeStatusDisplay();
+                }
+            }
+
+            function updateStatusDisplay(text) {
+                let statusDiv = document.getElementById('loginStatusDiv');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'loginStatusDiv';
+                    statusDiv.className = 'login-status';
+                    // Prepends to the parent of login/logout buttons
+                    document.querySelector('.d-flex').parentNode.prepend(statusDiv); 
+                }
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> ${text}
+                    </span>
+                `;
+            }
+
+            function removeStatusDisplay() {
+                const statusDiv = document.getElementById('loginStatusDiv');
+                if (statusDiv) statusDiv.remove();
+            }
+
+            function setupEventListeners() {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => {
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    });
+                }
+
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        fetch('/Spengerguide/Login/logout.php', {
+                            method: 'POST',
+                            credentials: 'include'
+                        })
+                        .then(() => {
+                            localStorage.removeItem('isLoggedIn');
+                            window.location.reload();
+                        })
+                        .catch(error => console.error("Logout failed:", error));
+                    });
+                }
+            }
+
+            checkLoginStatus();
+            setupEventListeners();
+            setInterval(checkLoginStatus, 120000);
+        });
+    </script>
+
+    <style>
+        .login-status {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Navbar (same as in all other pages) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <button onclick="Log()" class="button">
-                <span class="button-content">Login </span>
-            </button>
+            <div class="d-flex">
+                <button id="navbarLoginElement" class="button me-2">
+                    <span class="button-content">Login</span>
+                </button>
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                    <span class="button-content">Abmelden</span>
+                </button>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-        </a>
-        <div class="container-fluid">
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> <!-- Home link -->
+                        <a class="nav-link" href="../index.html">Start</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -35,77 +136,154 @@
                             Abteilungen
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                        <li><a class="dropdown-item" href="content1.html">Animation</a></li>
-                        <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
-                        <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
-                        <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
-                        <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
-                        <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
-                        <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
-                        <li><a class="dropdown-item" href="content6.html">Technisches Management und</a></li>
+                            <li><a class="dropdown-item" href="content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
                         </ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Services/service.html">Dienste</a> <!-- Services link -->
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> <!-- Contact link -->
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </nav>  
+    </nav>
 
 
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Informationstechnik - Fachschule</h1>
-            <p style="font-weight: bold;">Das ist Informationstechnik - Fachschule. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Informationstechnik - Fachschule der Höheren Lehranstalt für Informationstechnik.
+                Hier finden Sie konkrete Angaben zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
-                    Im ersten Jahr der Ausbildung liegt der Fokus auf praktischen Fertigkeiten wie dem Umgang mit mechanischen Werkzeugen, Löten, dem Einbau von PC-Komponenten und der Installation von Betriebssystemen, sowie Grundlagen der Medientechnik und Netzwerktechnik. 
+                    Die Absolventinnen und Absolventen der Fachschule für Informationstechnik sind in der Lage, 
+                    Aufgaben im Bereich der Informationstechnik <b>eigenverantwortlich und im Team</b> wahrzunehmen. 
+                    Sie beherrschen die <b>Installation, Konfiguration, Wartung und Administration von Hardware- und Softwarekomponenten sowie von Netzwerken</b>. 
+                    Ein besonderer Fokus liegt auf der <b>Anwendungsorientierung</b> und der Fähigkeit, komplexe IT-Systeme zu verstehen und zu betreuen. 
+                    Die Ausbildung qualifiziert für Tätigkeiten in den Bereichen IT-Support, Systemadministration, Netzwerktechnik, Medientechnik und in der Programmierung.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Informationstechnik - Fachschule (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Fachschule für Informationstechnik wird für ihre <b>solide und praxisnahe Ausbildung</b> gelobt. 
+                        Besonders positiv hervorgehoben werden die <b>umfassenden Kenntnisse in Netzwerktechnik, Systemadministration und Hardware-Komponenten</b>. 
+                        Viele schätzen die <b>direkte Anwendbarkeit des Gelernten</b> im Berufsleben und die Möglichkeit, frühzeitig praktische Erfahrungen zu sammeln.
+                        Herausfordernd kann die schnelle Entwicklung in der IT-Branche und die Notwendigkeit, ständig auf dem neuesten Stand zu bleiben, empfunden werden. 
+                        Ein Wunsch ist die <b>stärkere Integration von Spezialthemen</b> wie Künstlicher Intelligenz oder Cloud-Native-Entwicklung. 
+                        Die <b>Unterstützung durch Lehrkräfte</b>, die sowohl theoretisches Wissen als auch praktische Erfahrungen vermitteln, wird als sehr wertvoll betrachtet.
+                    </p>
+                </div>
             </div>
+
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Angewandte Elektronik und Hardware:</b> Aufbau und Funktionsweise elektronischer Schaltungen, Umgang mit Messgeräten, Löten, Montage und Inbetriebnahme von PC-Hardware, Fehlerdiagnose.<br />
+                            <b>Informations- und Medientechnik:</b> Grundlagen digitaler Medien, Datenformate, Bearbeitung von Audio- und Videodateien, Medientechnik-Hardware.<br />
+                            <b>Netzwerktechnik:</b> Grundlagen der Netzwerkarchitektur, Topologien, Protokolle, IP-Adressierung, Kabelverbindungen, Konfiguration einfacher Netzwerke.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Einführung in die Hardware ist super spannend, man lernt, wie ein PC wirklich funktioniert.</li>
+                                <li>Das Löten und die Arbeit in den Werkstätten machen viel Spaß und sind sehr lehrreich.</li>
+                                <li>Netzwerk-Grundlagen sind am Anfang etwas komplex, aber sehr wichtig für alles Weitere.</li>
+                                <li>Manchmal ist die Menge an neuen Informationen überwältigend, aber die Lehrer helfen gut.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Angewandte Elektronik und Hardware:</b> Vertiefung Elektronik, Fehlersuche in Schaltungen, Mikrocontroller-Grundlagen.<br />
+                            <b>Betriebssysteme und Datenbanken:</b> Installation und Konfiguration von Betriebssystemen (Windows, Linux), Benutzerverwaltung, Dateisysteme, Grundlagen von Datenbanken (SQL).<br />
+                            <b>Informations- und Medientechnik:</b> Content Management Systeme (CMS), Webdesign-Grundlagen, Bildbearbeitung, Screendesign.<br />
+                            <b>Netzwerktechnik:</b> Router- und Switch-Konfiguration, WLAN-Einrichtung, Sicherheit im Heimnetzwerk.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das Arbeiten mit Linux und die Installation von Betriebssystemen ist sehr praxisrelevant.</li>
+                                <li>Die Einführung in Webdesign und CMS ist motivierend, da man sofort Ergebnisse sieht.</li>
+                                <li>Netzwerkkonfiguration mit Routern und Switches ist anspruchsvoll, aber man versteht, wie das Internet zu Hause funktioniert.</li>
+                                <li>Ich würde mir mehr Zeit für eigene Projekte im Bereich Medientechnik wünschen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Angewandte Elektronik und Hardware:</b> Sensoren und Aktoren, elektrische Messtechnik, Schaltungsanalyse, Automatisierungstechnik, SPS-Grundlagen.<br />
+                            <b>Betriebssysteme und Datenbanken:</b> Datenbankdesign, SQL-Abfragen, Datenintegrität, Serverinstallation und -konfiguration, Active Directory, Cloud-Dienste.<br />
+                            <b>Netzwerktechnik:</b> Netzwerksicherheit (Firewalls, VPN), professionelle Netzwerkdokumentation, Fehleranalyse in komplexen Netzwerken.<br />
+                            <b>Programmierung und Softwareentwicklung:</b> Einführung in eine Programmiersprache (z.B. Python/Java), Algorithmen, Datenstrukturen, Softwaretesting.<br />
+                            <b>IT-Sicherheit:</b> Bedrohungsanalyse, Verschlüsselung, Datenschutz, Cyber-Kriminalität, Security Best Practices.<br />
+                            <b>Projektmanagement:</b> Projektphasen, Planung, Risikomanagement, agile Methoden (Scrum).
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Einführung ins Programmieren ist herausfordernd, aber man merkt, wie viel man damit erreichen kann.</li>
+                                <li>IT-Sicherheit ist ein super wichtiges Thema, die Inhalte sind topaktuell.</li>
+                                <li>Server-Konfiguration und Cloud-Dienste sind sehr relevant für zukünftige Berufe.</li>
+                                <li>Manchmal ist es schwierig, die vielen Projekte und den Theorieunterricht unter einen Hut zu bringen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang (Halbjährig)</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Vertiefung und Spezialisierung:</b> Individuelle Vertiefung in einem IT-Bereich (z.B. IoT, Cybersecurity, Mobile Development), Fachprojekt / Praktische Arbeit: Durchführung eines komplexen IT-Projekts mit Praxisbezug, Dokumentation, Präsentation.<br />
+                            <b>Berufspraktikum:</b> Sammeln praktischer Erfahrungen in einem Unternehmen (im Sommer vor dem 7. Semester).<br />
+                            <b>Projektmanagement:</b> Teamführung, Kommunikation, Projektpräsentation.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das Fachprojekt ist die Krönung der Ausbildung – man kann sich auf ein Thema spezialisieren, das einen wirklich interessiert.</li>
+                                <li>Das Praktikum war Gold wert, um echte Einblicke in den Berufsalltag zu bekommen und Kontakte zu knüpfen.</li>
+                                <li>Die Präsentation der Abschlussarbeiten ist ein wichtiger Schritt für die berufliche Zukunft.</li>
+                                <li>Es ist eine intensive Zeit, aber man merkt, wie gut man auf den Arbeitsmarkt vorbereitet wird.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
-                    <div class="extra-content">
-                        <p></p>
-                    </div>
-                </div>
-                
+
             </div>
         </div>
     </section>
@@ -114,7 +292,10 @@
         <p>© 2024 Spengerguide. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="content.js"></script>
 </body>
+
 </html>

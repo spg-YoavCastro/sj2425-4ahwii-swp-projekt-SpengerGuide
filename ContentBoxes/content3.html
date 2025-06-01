@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 
-<!-- Login-System für alle Seiten -->
 <script>
 // Einheitliche Login-Logik für gesamte Website
 document.addEventListener('DOMContentLoaded', function() {
@@ -100,10 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Bootstrap Icons (falls nicht vorhanden) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-<!-- Optional: CSS für Login-Status -->
 <style>
 .login-status {
     display: flex;
@@ -122,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar (same as in all other pages) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <button onclick="Log()" class="button">
@@ -139,8 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> <!-- Home link -->
-                    </li>
+                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -157,14 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         <li><a class="dropdown-item" href="content6.html">Technisches Management und</a></li>
                         </ul>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
-                    </li>
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Services/service.html">Dienste</a> <!-- Services link -->
-                    </li>
+                        <a class="nav-link" href="../Services/service.html">Dienste</a> </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> <!-- Contact link -->
-                    </li>
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> </li>
 
                 </ul>
             </div>
@@ -172,52 +164,144 @@ document.addEventListener('DOMContentLoaded', function() {
     </nav>
 
 
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Betriebsinformatik</h1>
-            <p style="font-weight: bold;">Das ist Betriebsinformatik. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Betriebsinformatik der Höheren Lehranstalt für Technik. Hier finden Sie konkrete Angaben
+                zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
                     Hier lernst du, moderne technische Systeme zu planen, zu entwickeln, zu implementieren und zu testen. Gleichzeitig erwirbst du betriebswirtschaftliche Kompetenzen, die notwendig sind, um digitale Produkte und Systeme effizient und gewinnbringend in Unternehmen einzusetzen.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Betriebsinformatik (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Abteilung Betriebsinformatik wird für ihre **einzigartige Kombination aus Informatik und Betriebswirtschaft** sehr geschätzt. Besonders hervorzuheben sind die **praxisnahe Vermittlung** von IT-Systemen im Unternehmenskontext und die **starke Ausrichtung auf digitale Transformation**. Viele Studierende betonen, wie gut sie auf die Anforderungen der Industrie 4.0 vorbereitet werden.
+                        Als herausfordernd wird der **breite Umfang der Themen** empfunden, der sowohl technische als auch wirtschaftliche Inhalte abdeckt. Ein Wunsch ist die noch **stärkere Integration von realen Projekten** mit Unternehmen. Die **unterstützende Atmosphäre** durch engagierte Lehrkräfte, die sowohl IT- als auch Business-Expertise besitzen, wird als großer Vorteil wahrgenommen.
+                    </p>
+                </div>
             </div>
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Informatik und Informationssysteme:</b> Einführung in Grundlagen der Informatik, Hardware- und Softwarekomponenten, grundlegende Konzepte von Informationssystemen.<br />
+                            <b>Softwareentwicklung und Projektmanagement:</b> Erste Schritte in die Programmierung, Einführung in algorithmisches Denken und Problemlösung.<br />
+                            <b>Unternehmensführung und Wirtschaftsrecht:</b> Grundlagen der Betriebswirtschaftslehre, Wirtschaftsrecht und Unternehmensformen.<br />
+                            <b>Mechanische Technologie:</b> Einführung in grundlegende technische Konzepte und Werkstoffe.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Kombination aus BWL und IT ist anfangs ungewohnt, aber spannend.</li>
+                                <li>Die Programmiergrundlagen legen ein gutes Fundament, auch wenn es herausfordernd ist.</li>
+                                <li>Man versteht schnell, wie wichtig IT für Unternehmen ist.</li>
+                                <li>Mehr praktische Übungen im Labor wären toll, um das Gelernte zu festigen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Informatik und Informationssysteme:</b> Vertiefung in Datenbanksystemen, Datenmodellierung und Datenbankabfragen.<br />
+                            <b>Softwareentwicklung und Projektmanagement:</b> Objektorientierte Programmierung, erste Software-Design-Muster.<br />
+                            <b>Netzwerke und Embedded Software:</b> Grundlagen der Netzwerktechnologien, TCP/IP, grundlegende Netzwerkkonfiguration.<br />
+                            <b>Betriebstechnik:</b> Vertiefung in betrieblichen Prozessen und Anlagen.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Datenbanken sind sehr nützlich für die Verknüpfung von IT und Wirtschaft.</li>
+                                <li>Die Netzwerk-Grundlagen sind essenziell und gut verständlich aufgebaut.</li>
+                                <li>Es ist toll zu sehen, wie die verschiedenen Fächer ineinandergreifen.</li>
+                                <li>Manchmal fehlt die Zeit, um in alle Themen tief einzutauchen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Softwareentwicklung und Projektmanagement:</b> Software-Engineering-Methoden, Qualitätssicherung, Einführung in Projektmanagement.<br />
+                            <b>Netzwerke und Embedded Software:</b> Netzwerksicherheit, Firewalls, Verschlüsselung, Einführung in Embedded Systems.<br />
+                            <b>Digitale Technologien (Vertiefung):</b> Auswahl aus z.B. Internet of Things (IoT), Cloud Computing, Cyber Security. Erste Projekte im "Smart Production Lab" zur Vernetzung von Fachtheorie und Praxis.<br />
+                            <b>Unternehmensführung und Wirtschaftsrecht:</b> Vertiefung in Unternehmensprozessen, Kostenrechnung und Controlling.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Spezialisierung in Digitale Technologien macht das Studium sehr relevant für die Zukunft.</li>
+                                <li>Das Smart Production Lab ist großartig, um Theorie und Praxis zu verbinden.</li>
+                                <li>Projektmanagement wird immer wichtiger und die Grundlagen sind gut gelegt.</li>
+                                <li>Manchmal ist die Balance zwischen IT- und BWL-Themen eine Herausforderung.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Softwareentwicklung und Projektmanagement:</b> Fortgeschrittenes Software-Design, Teststrategien, agile Entwicklungsmethoden.<br />
+                            <b>Informatik und Informationssysteme:</b> Betriebliche Informationssysteme (ERP, CRM), Datenanalyse.<br />
+                            <b>Digitale Technologien (Vertiefung):</b> Vertiefung in gewählten Bereichen wie Big Data, Robotics, 3D Modelling, Logistics Simulation.<br />
+                            <b>Angewandte Mechatronik:</b> Integration von Mechatronik in IT-Systeme, Automatisierungstechnik.<br />
+                            <b>Unternehmensführung und Wirtschaftsrecht:</b> Finanzmanagement, Investitionsrechnung, Controlling.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Projekte werden komplexer und realitätsnäher, was eine gute Vorbereitung für die Berufswelt ist.</li>
+                                <li>Die Verbindung von IT und Mechatronik ist sehr spannend, besonders im Hinblick auf Industrie 4.0.</li>
+                                <li>Big Data und Cloud Computing sind Themen, die in der Wirtschaft extrem gefragt sind.</li>
+                                <li>Manchmal ist die workload sehr hoch, aber es lohnt sich für das umfangreiche Wissen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
+                    <div class="cont-title">5. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Softwareentwicklung und Projektmanagement:</b> Vorbereitung auf das Diplomprojekt, komplexe Softwarearchitekturen, Deployment.<br />
+                            <b>Informatik und Informationssysteme:</b> IT-Strategie und Governance, aktuelle Trends in der IT.<br />
+                            <b>Digitale Technologien (Vertiefung):</b> Anwendung der spezialisierten Kenntnisse in Großprojekten, eventuell mit Partnerunternehmen.<br />
+                            <b>Unternehmensführung und Wirtschaftsrecht:</b> Strategische Unternehmensführung, Personalmanagement, Marketing.<br />
+                            <b>Diplomprojekt:</b> Eigenständige Entwicklung und Umsetzung eines umfassenden Projekts mit Fokus auf Betriebsinformatik, von der Konzeption bis zur Präsentation.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das Diplomprojekt ist der Höhepunkt, wo man alles Gelernte anwenden und sich kreativ entfalten kann.</li>
+                                <li>Die Ausbildung bereitet hervorragend auf die Anforderungen der digitalen Wirtschaft vor.</li>
+                                <li>Die Kombination aus technischen und betriebswirtschaftlichen Fähigkeiten ist ein großer Vorteil auf dem Arbeitsmarkt.</li>
+                                <li>Trotz des hohen Lernaufwands sind die Erfolgserlebnisse sehr motivierend.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>

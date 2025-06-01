@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,127 @@
     <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    updateUI(data);
+                })
+                .catch(error => console.error("Login-Check failed:", error));
+            }
+
+            function updateUI(data) {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+
+                if (data.loggedIn && data.user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+
+                    updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+                } else {
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    removeStatusDisplay();
+                }
+            }
+
+            function updateStatusDisplay(text) {
+                let statusDiv = document.getElementById('loginStatusDiv');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'loginStatusDiv';
+                    statusDiv.className = 'login-status';
+                    // Prepends to the parent of login/logout buttons
+                    document.querySelector('.d-flex').parentNode.prepend(statusDiv); 
+                }
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> ${text}
+                    </span>
+                `;
+            }
+
+            function removeStatusDisplay() {
+                const statusDiv = document.getElementById('loginStatusDiv');
+                if (statusDiv) statusDiv.remove();
+            }
+
+            function setupEventListeners() {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => {
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    });
+                }
+
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        fetch('/Spengerguide/Login/logout.php', {
+                            method: 'POST',
+                            credentials: 'include'
+                        })
+                        .then(() => {
+                            localStorage.removeItem('isLoggedIn');
+                            window.location.reload();
+                        })
+                        .catch(error => console.error("Logout failed:", error));
+                    });
+                }
+            }
+
+            checkLoginStatus();
+            setupEventListeners();
+            setInterval(checkLoginStatus, 120000);
+        });
+    </script>
+
+    <style>
+        .login-status {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Navbar (same as in all other pages) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <button onclick="Log()" class="button">
-                <span class="button-content">Login </span>
-            </button>
+            <div class="d-flex">
+                <button id="navbarLoginElement" class="button me-2">
+                    <span class="button-content">Login</span>
+                </button>
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                    <span class="button-content">Abmelden</span>
+                </button>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-        </a>
-        <div class="container-fluid">
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> <!-- Home link -->
+                        <a class="nav-link" href="../index.html">Start</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -35,77 +136,173 @@
                             Abteilungen
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                        <li><a class="dropdown-item" href="content1.html">Animation</a></li>
-                        <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
-                        <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
-                        <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
-                        <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
-                        <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
-                        <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
-                        <li><a class="dropdown-item" href="content6.html">Technisches Management und</a></li>
+                            <li><a class="dropdown-item" href="content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
                         </ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Services/service.html">Dienste</a> <!-- Services link -->
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> <!-- Contact link -->
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Medizininformatik</h1>
-            <p style="font-weight: bold;">Das ist Medizininformatik. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Medizininformatik der Höheren Lehranstalt für Biomedizin- und Gesundheitstechnik. 
+                Hier finden Sie konkrete Angaben zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
-                    Dieses interdisziplinäre Fachgebiet verbindet technisches Know-how mit medizinischem Wissen und eröffnet spannende sowie abwechslungsreiche Einblicke in die digitale Gesundheitsversorgung.
+                    Die Absolventinnen und Absolventen können <b>eigenverantwortlich im Gesundheitsbereich mit Informations- und Kommunikationstechnologien</b> 
+                    sowie mit biomedizinischen und gesundheitstechnischen Geräten und Systemen umgehen. 
+                    Sie sind in der Lage, Geräte und Systeme zu betreuen, zu warten und weiterzuentwickeln. 
+                    Sie können bei der Beschaffung von Geräten und Systemen mitwirken, diese in Betrieb nehmen und einschulen. 
+                    Typische Tätigkeitsfelder sind die Entwicklung, Wartung und Betreuung von Hard- und Software für medizinische Geräte und Systeme, 
+                    die Systemintegration im Krankenhausbereich, die Entwicklung und Wartung von Gesundheitsinformationssystemen, 
+                    die IT-Sicherheit im Gesundheitswesen, der medizinische Support und das Projektmanagement im Medizintechnikbereich. 
+                    Dieses interdisziplinäre Fachgebiet verbindet technisches Know-how mit medizinischem Wissen und eröffnet 
+                    spannende sowie abwechslungsreiche Einblicke in die digitale Gesundheitsversorgung.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Medizininformatik (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Medizininformatik-Abteilung wird für ihre <b>einzigartige Kombination aus IT und Medizin</b> sehr geschätzt. 
+                        Besonders positiv hervorgehoben werden die <b>praxisnahen Projekte an medizinischen Geräten</b> und die 
+                        <b>fundierte Vorbereitung auf den Gesundheitssektor</b>. Viele schätzen die <b>tiefe Einarbeitung in 
+                        Gesundheitsinformationssysteme und IT-Sicherheit im Krankenhausbereich</b>.
+                        Herausfordernd kann die <b>Komplexität der medizinischen Fachterminologie</b> und die <b>schnelle Entwicklung 
+                        der Technologien</b> empfunden werden. Ein Wunsch ist die <b>stärkere Betonung von KI und maschinellem 
+                        Lernen</b> in der medizinischen Diagnostik. Die <b>Unterstützung durch spezialisierte Lehrkräfte</b> 
+                        bei der Verknüpfung von medizinischen und technischen Themen wird als exzellent bewertet.
+                    </p>
+                </div>
             </div>
+
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores laboriosam labore voluptates placeat debitis recusandae quaerat qui cumque vel? Aspernatur laborum asperiores hic, similique odio amet soluta voluptate obcaecati, quam nostrum tempora. Quae ducimus rem ratione quod numquam doloremque deleniti magnam voluptate reiciendis itaque dolorem quasi temporibus a obcaecati, vero sed alias enim quam iure voluptas sapiente! Hic deserunt tenetur asperiores dolorum. Nesciunt, vitae perferendis. Accusantium accusamus ducimus amet explicabo? Voluptatum nisi voluptatibus, necessitatibus atque consequuntur sunt quos magni explicabo recusandae veniam reiciendis quisquam hic cupiditate quaerat voluptates magnam aliquam quam deleniti omnis impedit pariatur vero eius dolore. Voluptas, magni.</p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Biomedizinische und Gesundheitstechnische Informatik (BHTI):</b> Grundlagen der Informationstechnik und Medizininformatik, Computerarchitektur, Betriebssysteme, Netzwerkgrundlagen, Einführung in die Programmierung, Medizininformatik als Fachgebiet, Hardware medizinischer Geräte (z.B. PCs, Server).<br />
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Der Einstieg in die **Medizininformatik** ist sehr interessant und verbindet zwei spannende Bereiche.</li>
+                                <li>Die Grundlagen der **IT und Programmierung** sind gut verständlich und legen eine solide Basis.</li>
+                                <li>Manchmal ist die Menge an neuen Begriffen aus beiden Welten (IT und Medizin) anspruchsvoll.</li>
+                                <li>Mehr Einblicke in reale Anwendungen medizinischer IT wären wünschenswert.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Biomedizinische und Gesundheitstechnische Informatik (BHTI):</b> Algorithmen und Datenstrukturen, objektorientierte Programmierung, Einführung in Datenbanken, medizinische Datenformate, Grundlagen der Elektronik und Elektrotechnik.<br />
+                            <b>Medizinische Dokumentation und Statistik (MDS):</b> Grundlagen der medizinischen Dokumentation, Terminologien und Klassifikationen, Datenqualität.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Einführung in **Datenbanken und medizinische Datenformate** ist sehr praxisrelevant.</li>
+                                <li>**Medizinische Dokumentation** gibt einen guten Überblick über die Strukturen im Gesundheitswesen.</li>
+                                <li>Die Verbindung von Programmierung und medizinischen Anwendungsfällen ist sehr motivierend.</li>
+                                <li>Es wäre hilfreich, wenn mehr Zeit für die Vertiefung von medizinischen Fallstudien zur Verfügung stünde.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Biomedizinische und Gesundheitstechnische Informatik (BHTI):</b> Netzwerkplanung, drahtlose Netzwerke, IT-Sicherheit und Datenschutz in medizinischen Systemen, biomedizinische Messtechnik und Signalverarbeitung.<br />
+                            <b>Medizinische Dokumentation und Statistik (MDS):</b> Vertiefung in medizinischer Statistik, Datenanalyse und Visualisierung.<br />
+                            <b>Medizininformatik-Projekte (MIP):</b> Erste Projektarbeit in Medizininformatik – Konzeption und Umsetzung kleinerer medizinischer IT-Anwendungen.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Themen **IT-Sicherheit und Datenschutz im Gesundheitswesen** sind extrem wichtig und werden sehr gut vermittelt.</li>
+                                <li>Die ersten **Medizininformatik-Projekte** sind eine tolle Möglichkeit, das Gelernte anzuwenden.</li>
+                                <li>**Signalverarbeitung** ist anspruchsvoll, aber essenziell für das Verständnis medizinischer Geräte.</li>
+                                <li>Einige wünschen sich mehr aktuelle Beispiele und Bedrohungsszenarien im Bereich Cybersecurity im Gesundheitswesen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Biomedizinische und Gesundheitstechnische Informatik (BHTI):</b> Software Engineering für medizinische Anwendungen (Entwicklungsprozesse, Testverfahren, Qualitätssicherung), medizinische Bildverarbeitung und Bildgebungssysteme.<br />
+                            <b>Technologie und Management im Gesundheitswesen (TMG):</b> Einführung in Krankenhausinformationssysteme (KIS) und E-Health-Anwendungen.<br />
+                            <b>Medizininformatik-Projekte (MIP):</b> Fortgeschrittene Projektarbeit und Systemintegration im medizinischen Kontext.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Arbeit an **Krankenhausinformationssystemen (KIS)** ist sehr realitätsnah und bereitet gut auf den Arbeitsalltag vor.</li>
+                                <li>**Medizinische Bildverarbeitung** ist faszinierend und zeigt, wie viel Potenzial in Daten steckt.</li>
+                                <li>Die Projekte werden sehr groß und fordernd, aber man lernt enorm viel über <b>Teamwork und Projektmanagement</b>.</li>
+                                <li>Manchmal fühlt man sich vom Umfang der Themen erschlagen, aber die Lehrer sind sehr unterstützend.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
+                    <div class="cont-title">5. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Biomedizinische und Gesundheitstechnische Informatik (BHTI):</b> Spezialgebiete der Medizininformatik (z.B. Telemedizin, Ambient Assisted Living (AAL), Künstliche Intelligenz in der Medizin).<br />
+                            <b>Technologie und Management im Gesundheitswesen (TMG):</b> IT-Management im Gesundheitswesen, Qualitätsmanagement und rechtliche Rahmenbedingungen.<br />
+                            <b>Medizininformatik-Projekte (MIP):</b> **Diplomprojekt** – eigenständige Realisierung eines umfassenden Medizininformatik-Projekts von der Konzeption bis zur Implementierung und Präsentation.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das **Diplomprojekt** ist der Höhepunkt der Ausbildung – man kann zeigen, was man alles gelernt hat!</li>
+                                <li>Die Vorbereitung auf die Praxis ist hervorragend, besonders durch die Arbeit an realen Problemen im Gesundheitswesen.</li>
+                                <li>Die Intensität ist sehr hoch, aber die Erfolgserlebnisse sind es wert, vor allem wenn man sieht, wie man die Gesundheitsversorgung verbessern kann.</li>
+                                <li>Mehr Möglichkeiten zur Vertiefung individueller Interessen innerhalb des Lehrplans, besonders in neuen Feldern wie KI-Diagnostik, wären super.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -114,7 +311,10 @@
         <p>© 2024 Spengerguide. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="content.js"></script>
 </body>
+
 </html>

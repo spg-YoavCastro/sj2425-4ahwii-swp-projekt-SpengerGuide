@@ -1,76 +1,207 @@
-/*Body Background intern gestyled*/
-
-footer {
-    position: static;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f8f9fa;
-    text-align: center;
-    padding: 10px 0;
+/* General Body Styles for better typography and background */
+body {
+    font-family: 'Open Sans', sans-serif; /* A more modern, readable sans-serif font */
+    line-height: 1.6;
+    color: #333; /* Softer black for text */
+    background-color: #f4f7f6; /* Light, calming background */
 }
+
+/* Navbar - already quite good, maybe slight refinement */
 .navbar {
     background-color: white;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* More space below navbar */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Subtle shadow for depth */
 }
+
+/* Main Content Area - better padding and max-width */
 #content-section {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 200px); 
+    /* Removed align-items: center; if content is long, it should start at top */
+    min-height: calc(100vh - 200px); /* Keep for minimum height */
+    padding: 40px 20px; /* Generous padding */
+    max-width: 1200px; /* Max width for content to prevent overly wide lines */
+    margin: 0 auto; /* Center the content section */
 }
 
-.content-inhalt {
-    display: flex;
-    flex-direction: column;     
-    align-items: center;        
-    justify-content: center;    
-    gap: 20px;                  
-    padding: 20px;
-    padding-right: 0px;
-    padding-left: 0px;
-    min-height: 60vh;           
-}
-
-.cont {
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 15px 30px;
-    width: fit-content;         
+/* Page Title & Intro - more visual impact */
+h1 {
+    font-family: 'Pacifico', cursive; /* Keep your unique font for the main title */
+    font-size: 3.2em; /* Larger, more impactful */
+    color: #007bff; /* Use your primary brand color */
     text-align: center;
-    background-color: #f0f0f0;
-    font-weight: bold;
-    width: 70rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
 }
 
-/*Aufklappen*/
+.intro-bold {
+    font-size: 1.2em;
+    font-weight: 500; /* Slightly bolder, but not too heavy */
+    text-align: center;
+    max-width: 800px; /* Limit width for readability */
+    margin: 0 auto 40px auto; /* Center and add more bottom margin */
+    color: #555;
+}
+
+/* Preview Section - subtle borders and background */
+.preview {
+    background-color: #ffffff;
+    border-radius: 12px; /* Softer rounded corners */
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* More noticeable shadow */
+    border: 1px solid #e0e0e0; /* Light border */
+}
+
+.department-feedback-summary {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #ccc; /* Subtle separator */
+}
+
+.feedback-heading {
+    color: #007bff;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+}
+
+/* Accordion Container Styling (cont) */
+.content-inhalt {
+    gap: 15px; /* Slightly less gap for a tighter look */
+    padding: 0; /* Remove vertical padding as .cont has its own */
+    min-height: auto; /* Let content dictate height */
+    width: 100%; /* Ensure it takes full width of its parent */
+    align-items: stretch; /* Make accordion items stretch to full width */
+}
 
 .cont {
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 15px 20px;
-    width: 80%;
-    background-color: #f0f0f0;
-    text-align: left;
+    border: none; /* Remove border for a cleaner look */
+    border-radius: 12px; /* Match preview section border-radius */
+    padding: 20px 25px; /* More padding for better spacing */
+    width: 100%; /* Take full available width */
+    background-color: #ffffff; /* White background for clean look */
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07); /* Consistent shadow */
     margin-bottom: 15px;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    position: relative; /* For the toggle icon */
+    display: flex; /* Flexbox for title and icon positioning */
+    justify-content: space-between; /* Space out title and icon */
+    align-items: center;
 }
 
+.cont:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12); /* Enhanced shadow on hover */
+    transform: translateY(-3px); /* Subtle lift effect */
+}
+
+.cont.open {
+    background-color: #eaf5ff; /* Light blue background when open */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* Stronger shadow when open */
+}
+
+/* Title and Toggle Button Alignment */
 .cont-title {
-    font-weight: bold;
-    font-size: 1.1em;
+    font-weight: 600; /* Medium bold */
+    font-size: 1.25em; /* Slightly larger title */
+    color: #333;
+    flex-grow: 1; /* Allow title to take up available space */
 }
 
+/* Toggle Icon */
+.toggle-icon {
+    font-size: 1.5em; /* Larger icon */
+    color: #007bff; /* Blue color for icon */
+    transition: transform 0.3s ease;
+}
+
+.cont.open .toggle-icon {
+    transform: rotate(180deg); /* Rotate icon when open */
+}
+
+/* Extra Content (Accordion Content) */
 .extra-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease;
+    transition: max-height 0.5s ease-out; /* Slower, smoother transition */
+    margin-top: 15px; /* More space above content */
+    padding-top: 15px; /* Padding for separation */
+    border-top: 1px solid #f0f0f0; /* Light separator line */
     font-weight: normal;
-    margin-top: 10px;
+    color: #444;
 }
 
-/* Wenn offen */
 .cont.open .extra-content {
-    max-height: 500px; /* groß genug für Inhalt */
+    max-height: 1000px; /* Generous height for content */
+}
+
+/* Curriculum Points Styling */
+.curriculum-points {
+    margin-bottom: 20px;
+    background-color: #f8f9fa; /* Light background for points */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    font-size: 0.95em;
+}
+
+.curriculum-points b {
+    color: #0056b3; /* Darker blue for bold text */
+}
+
+/* Student Feedback Section */
+.student-feedback-section {
+    background-color: #fbfcfe; /* Very light blue background */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eaf5ff;
+    margin-top: 20px; /* Space from curriculum points */
+}
+
+.student-feedback-section h6 {
+    color: #007bff;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.student-feedback-section ul {
+    list-style-type: disc; /* Use discs for list items */
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.student-feedback-section li {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+/* Footer - already decent, position static is fine */
+footer {
+    position: static; /* As defined, works fine */
+    background-color: #f0f0f0; /* A bit darker than f8f9fa for contrast */
+    padding: 20px 0; /* More vertical padding */
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 50px; /* More space before footer */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .intro-bold {
+        font-size: 1.1em;
+        padding: 0 15px;
+    }
+
+    .cont {
+        padding: 15px 20px;
+    }
+
+    .cont-title {
+        font-size: 1.1em;
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,127 @@
     <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    updateUI(data);
+                })
+                .catch(error => console.error("Login-Check failed:", error));
+            }
+
+            function updateUI(data) {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+
+                if (data.loggedIn && data.user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+
+                    updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+                } else {
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    removeStatusDisplay();
+                }
+            }
+
+            function updateStatusDisplay(text) {
+                let statusDiv = document.getElementById('loginStatusDiv');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'loginStatusDiv';
+                    statusDiv.className = 'login-status';
+                    // Prepends to the parent of login/logout buttons
+                    document.querySelector('.d-flex').parentNode.prepend(statusDiv); 
+                }
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> ${text}
+                    </span>
+                `;
+            }
+
+            function removeStatusDisplay() {
+                const statusDiv = document.getElementById('loginStatusDiv');
+                if (statusDiv) statusDiv.remove();
+            }
+
+            function setupEventListeners() {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => {
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    });
+                }
+
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        fetch('/Spengerguide/Login/logout.php', {
+                            method: 'POST',
+                            credentials: 'include'
+                        })
+                        .then(() => {
+                            localStorage.removeItem('isLoggedIn');
+                            window.location.reload();
+                        })
+                        .catch(error => console.error("Logout failed:", error));
+                    });
+                }
+            }
+
+            checkLoginStatus();
+            setupEventListeners();
+            setInterval(checkLoginStatus, 120000);
+        });
+    </script>
+
+    <style>
+        .login-status {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Navbar (same as in all other pages) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <button onclick="Log()" class="button">
-                <span class="button-content">Login </span>
-            </button>
+            <div class="d-flex">
+                <button id="navbarLoginElement" class="button me-2">
+                    <span class="button-content">Login</span>
+                </button>
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                    <span class="button-content">Abmelden</span>
+                </button>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-        </a>
-        <div class="container-fluid">
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> <!-- Home link -->
+                        <a class="nav-link" href="../index.html">Start</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -35,77 +136,174 @@
                             Abteilungen
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                        <li><a class="dropdown-item" href="content1.html">Animation</a></li>
-                        <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
-                        <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
-                        <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
-                        <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
-                        <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
-                        <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
-                        <li><a class="dropdown-item" href="content6.html">Technisches Management und</a></li>
+                            <li><a class="dropdown-item" href="content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
                         </ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Services/service.html">Dienste</a> <!-- Services link -->
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> <!-- Contact link -->
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
 
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Interior- und Surfacedesign</h1>
-            <p style="font-weight: bold;">Das ist Interior- und Surfacedesign. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Interior- und Surfacedesign der Höheren Lehranstalt für Art and Design. 
+                Hier finden Sie konkrete Angaben zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
+                    Die Absolventinnen und Absolventen können <b>eigenverantwortlich Aufgaben an der Schnittstelle von Design, Raumgestaltung und Oberflächenentwicklung</b> wahrnehmen. 
+                    Sie sind in der Lage, Konzepte für Innenräume zu entwickeln, Oberflächen zu gestalten und Produktlösungen zu entwerfen. 
+                    Typische Tätigkeitsfelder sind die Innenarchitektur, das Möbeldesign, das Messedesign, die Gestaltung von Oberflächen und Textilien, die Produktentwicklung, 
+                    die Beratung im Bereich Raum und Ausstattung sowie die kreative Leitung in Designbüros. 
                     Diese Abteilung reicht vom freien künstlerischen Gestalten über computerunterstützte Raumkonzeption und zwei- sowie dreidimensionale Visualisierung bis hin zum Dessinieren für verschiedene Anwendungsbereiche in Raum und Musterung.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Interior- und Surfacedesign (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Abteilung Interior- und Surfacedesign wird für ihre <b>kreative und praxisnahe Ausbildung</b> sehr geschätzt. 
+                        Besonders positiv hervorgehoben werden die <b>umfassenden Projekte in Raumgestaltung und Produktentwicklung</b> sowie die 
+                        <b>Vielzahl an Techniken von Skizzieren bis zur 3D-Modellierung</b>. Viele schätzen die 
+                        <b>Möglichkeit, eigene Designideen umzusetzen und realisierbare Prototypen zu erstellen</b>.
+                        Herausfordernd kann der hohe Anspruch an Kreativität und die Notwendigkeit, sich ständig über neue Trends zu informieren, empfunden werden. 
+                        Ein Wunsch ist die <b>stärkere Integration von Nachhaltigkeitsaspekten</b> in allen Designprozessen. Die 
+                        <b>Unterstützung durch Lehrkräfte</b>, die sowohl künstlerische als auch technische Expertise einbringen, wird als exzellent bewertet.
+                    </p>
+                </div>
             </div>
+
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Entwurf (ENT):</b> Grundlagen der Raumgestaltung und des Entwerfens, Raumanalyse, Grundriss, Schnitt, Perspektive, freies Zeichnen.<br />
+                            <b>Darstellung und Visualisierung (DV):</b> Einführung in die Darstellungstechniken und CAD, Technisches Zeichnen, Skizzentechnik, erste Schritte in CAD-Software.<br />
+                            <b>Werkstätte und Technologie (WT):</b> Grundlagen der Materialkunde und Werkstoffbearbeitung, Holz, Metall, Kunststoff, textile Materialien, einfache Bearbeitungstechniken.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Der Start ins Design ist super spannend, besonders das Erlernen der grundlegenden Zeichentechniken.</li>
+                                <li>Die Werkstätten bieten tolle Möglichkeiten, Materialien kennenzulernen und direkt zu arbeiten.</li>
+                                <li>Manchmal ist es eine Herausforderung, die verschiedenen Zeichenstile und CAD-Grundlagen gleichzeitig zu meistern.</li>
+                                <li>Ich wünschte, es gäbe noch mehr freie Gestaltungsprojekte am Anfang.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Entwurf (ENT):</b> Vertiefung in die Raumkonzeption und Möbelentwurf, Funktionale Raumplanung, Ergonomie, Möbelklassiker, eigene Möbelentwürfe.<br />
+                            <b>Darstellung und Visualisierung (DV):</b> Fortgeschrittene Visualisierungstechniken und 3D-Modellierung, Renderings, Modellbau, 3D-Software.<br />
+                            <b>Werkstätte und Technologie (WT):</b> Spezialisierung in Fertigungstechniken und Oberflächenbehandlung, Maschineneinsatz, Oberflächenveredelung, Textilgestaltung.<br />
+                            <b>Designtheorie und -geschichte (DTG):</b> Einführung in die Designgeschichte und -analyse, Epochen des Designs, wichtige Designer, Designprinzipien.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Der Möbelentwurf ist sehr kreativ und herausfordernd – man lernt, funktional und ästhetisch zu denken.</li>
+                                <li>Die 3D-Modellierung und Renderings sind faszinierend und ermöglichen realistische Darstellungen.</li>
+                                <li>Die Designgeschichte gibt einen wichtigen Kontext für die eigene Arbeit.</li>
+                                <li>Manchmal wäre mehr Zeit für individuelle Betreuung bei komplexen 3D-Modellen hilfreich.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Entwurf (ENT):</b> Projektbezogene Raumgestaltung und Markenidentität, Corporate Interior Design, Lichtplanung, Farbkonzepte, Materialcollagen.<br />
+                            <b>Darstellung und Visualisierung (DV):</b> Professionelle Präsentation und Animation, Portfolioentwicklung, Animationssoftware, Virtual Reality (VR) Grundlagen.<br />
+                            <b>Werkstätte und Technologie (WT):</b> Innovative Materialien und digitale Fertigungsverfahren, Smart Materials, 3D-Druck, Lasercutting.<br />
+                            <b>Designtheorie und -geschichte (DTG):</b> Design als gesellschaftlicher Faktor und Nachhaltigkeit, Ökodesign, soziale Aspekte von Design, Designethik.<br />
+                            <b>Produktentwicklung (PE):</b> Entwicklung von Designprodukten mit Fokus auf Usability.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das Corporate Interior Design und die Lichtplanung sind sehr anspruchsvoll, aber man sieht direkt die Wirkung der eigenen Arbeit.</li>
+                                <li>Die Arbeit mit innovativen Materialien und 3D-Druck ist unglaublich spannend und zukunftsweisend.</li>
+                                <li>Die Grundlagen in VR sind sehr cool und zeigen, wohin die Reise im Design geht.</li>
+                                <li>Mehr praktische Projekte, bei denen wir von Anfang bis Ende die Entwicklung eines Produkts begleiten, wären wünschenswert.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Entwurf (ENT):</b> Umfassende Entwurfsprojekte: Messebau, Shopdesign, temporäre Architekturen, Baurechtliche Grundlagen, Kostenkalkulation, Projektmanagement.<br />
+                            <b>Darstellung und Visualisierung (DV):</b> Spezialisierung in professionellen Renderings und interaktiven Visualisierungen.<br />
+                            <b>Produktentwicklung (PE):</b> Komplexe Produktentwicklungsprozesse und Prototypenbau.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Projekte im Messebau oder Shopdesign sind sehr realitätsnah und fordernd – hier lernt man wirklich für die Praxis.</li>
+                                <li>Die Spezialisierung auf professionelle Renderings ist super, um die Entwürfe überzeugend zu präsentieren.</li>
+                                <li>Der Prototypenbau ist eine tolle Möglichkeit, die eigenen Ideen greifbar zu machen.</li>
+                                <li>Manchmal ist die Menge an Details im Projektmanagement und bei den baurechtlichen Grundlagen überwältigend, aber notwendig.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
+                    <div class="cont-title">5. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Entwurf (ENT):</b> **Diplomarbeit** – Eigenständige Konzeption und Realisierung eines umfassenden Interior- oder Surfacedesign-Projekts, von der Ideenfindung bis zur Präsentation der Lösung; Fokus auf innovative Lösungen, Präsentation und Dokumentation.<br />
+                            <b>Designtheorie und -geschichte (DTG):</b> Designmanagement und Recht, Urheberrecht, Markenrecht, Existenzgründung im Designbereich.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die **Diplomarbeit** ist der Höhepunkt der Ausbildung – man kann hier alle gelernten Fähigkeiten unter Beweis stellen und etwas wirklich Eigenes schaffen.</li>
+                                <li>Die Module zu **Designmanagement und Recht** sind extrem wichtig für den Berufsstart, besonders wenn man sich selbstständig machen will.</li>
+                                <li>Es ist eine sehr intensive Zeit, aber die Unterstützung durch die Lehrer und die Möglichkeit, ein so großes Projekt umzusetzen, ist unbezahlbar.</li>
+                                <li>Ich würde mir wünschen, dass noch mehr Einblicke in internationale Designmärkte und Karrieremöglichkeiten geboten werden.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -114,7 +312,10 @@
         <p>© 2024 Spengerguide. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="content.js"></script>
 </body>
+
 </html>

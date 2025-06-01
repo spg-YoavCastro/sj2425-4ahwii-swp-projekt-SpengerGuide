@@ -8,177 +8,298 @@
     <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- Login-System für alle Seiten -->
     <script>
-    function updateUI(data) {
-    const loginBtn = document.getElementById('navbarLoginElement');
-    const logoutBtn = document.getElementById('navbarLogoutElement');
-    
-    if (data.loggedIn && data.user) {
-        // Eingeloggt
-        localStorage.setItem('isLoggedIn', 'true');
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (logoutBtn) {
-            logoutBtn.style.display = 'block';
-            logoutBtn.onclick = function(e) {
-                e.preventDefault();
-                performLogout();
-            };
-        }
-        
-        updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
-    } else {
-        // Ausgeloggt
-        localStorage.removeItem('isLoggedIn');
-        if (loginBtn) {
-            loginBtn.style.display = 'block';
-            loginBtn.onclick = function(e) {
-                e.preventDefault();
-                window.location.href = '/Spengerguide/Login/login.html';
-            };
-        }
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        removeStatusDisplay();
-    }
-}
+        function updateUI(data) {
+            const loginBtn = document.getElementById('navbarLoginElement');
+            const logoutBtn = document.getElementById('navbarLogoutElement');
 
-// Separate Logout-Funktion
-function performLogout() {
-    fetch('/Spengerguide/Login/logout.php', {
-        method: 'POST',
-        credentials: 'include'
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Logout failed');
-        return response.json();
-    })
-    .then(() => {
-        localStorage.removeItem('isLoggedIn');
-        window.location.reload();
-    })
-    .catch(error => {
-        console.error("Logout error:", error);
-        alert('Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
-    });
-}
+            if (data.loggedIn && data.user) {
+                // Logged in
+                localStorage.setItem('isLoggedIn', 'true');
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (logoutBtn) {
+                    logoutBtn.style.display = 'block';
+                    logoutBtn.onclick = function (e) {
+                        e.preventDefault();
+                        performLogout();
+                    };
+                }
+
+                updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+            } else {
+                // Logged out
+                localStorage.removeItem('isLoggedIn');
+                if (loginBtn) {
+                    loginBtn.style.display = 'block';
+                    loginBtn.onclick = function (e) {
+                        e.preventDefault();
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    };
+                }
+                if (logoutBtn) logoutBtn.style.display = 'none';
+                removeStatusDisplay();
+            }
+        }
+
+        // Separate Logout function
+        function performLogout() {
+            fetch('/Spengerguide/Login/logout.php', {
+                method: 'POST',
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Logout failed');
+                    return response.json();
+                })
+                .then(() => {
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error("Logout error:", error);
+                    alert('Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+                });
+        }
     </script>
 
     <style>
-    .login-status {
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        font-size: 0.9rem;
-    }
+        .login-status {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Navbar (konsistent mit allen Seiten) -->
     <nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-        <!-- Login/Logout Buttons - NEUE VERSION -->
-        <div class="d-flex">
-            <button id="navbarLoginElement" class="button me-2">
-                <span class="button-content">Login</span>
+        <div class="container-fluid">
+            <div class="d-flex">
+                <button id="navbarLoginElement" class="button me-2">
+                    <span class="button-content">Login</span>
+                </button>
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                    <span class="button-content">Abmelden</span>
+                </button>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <button id="navbarLogoutElement" class="button me-2" style="display:none;">
-                <span class="button-content">Abmelden</span>
-            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Start</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Abteilungen
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
+                            <li><a class="dropdown-item" href="content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../Q&A/q&a.html">Q&A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <!-- Hamburger Menu -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="../index.html">Start</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Abteilungen
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                        <li><a class="dropdown-item" href="content1.html">Animation</a></li>
-                        <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
-                        <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
-                        <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
-                        <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
-                        <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
-                        <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
-                        <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="../Q&A/q&a.html">Q&A</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../Services/service.html">Dienste</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Animation</h1>
-            <p style="font-weight: bold;">Das ist Animation. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Animation der Höheren Lehranstalt für Medien. Hier finden Sie konkrete Angaben
+                zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
-                    Die Animationsabteilung vermittelt praxisnahes Wissen in 2D- und 3D-Animation, Motion Design, Visual Effects und Sound Design. Mit professioneller Software wie Adobe Creative Suite und Autodesk Maya lernen Schüler:innen kreative Ideen technisch umzusetzen. 
+                    Die Absolventinnen und Absolventen des Ausbildungsschwerpunkts Animation sind Spezialistinnen und
+                    Spezialisten für die Konzeption, Planung, Gestaltung und Herstellung von medialen Produkten mit
+                    Fokus auf Ton- und Videomaterial mit komplex bewegten Elementen der 2D- und 3D-Animation. Sie
+                    können im Team komplexe analoge wie digitale Animationstechniken anwenden und verbinden,
+                    Animationsprojekte hinsichtlich ihrer Dramaturgie vertonen, in einer Studioumgebung arbeiten und
+                    diese projektbezogen anpassen. Sie verfügen über handwerkliches, technisches und medientheoretisches
+                    Spezialwissen, um kreative Entwürfe zu erstellen und für die Produktion in unterschiedlichen Medien
+                    zu entwickeln.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Animation (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Animationsabteilung wird von vielen für die praxisnahe Ausbildung und die Möglichkeit, früh
+                        mit professioneller Software zu arbeiten, geschätzt. Die Qualität der größeren Projekte in den
+                        höheren Jahrgängen und die Vorbereitung auf die Kreativbranche werden oft positiv hervorgehoben.
+                        Gleichzeitig empfinden einige die Arbeitsbelastung, besonders während intensiver Projektphasen,
+                        als herausfordernd. Ein wiederkehrender Wunsch ist mehr Flexibilität für eigene kreative Projekte
+                        und Experimente, vor allem in den ersten beiden Jahren. Die Unterstützung durch die Lehrkräfte
+                        bei fachlichen Schwierigkeiten wird mehrheitlich als gut bewertet.
+                    </p>
+                </div>
             </div>
+
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p>
-                            Der Klimawandel beschreibt die langfristige Veränderung der globalen Temperaturen und Wetterbedingungen, hauptsächlich durch menschliche Aktivitäten wie die Verbrennung fossiler Brennstoffe. Diese Veränderungen führen zu extremen Wetterereignissen, dem Anstieg des Meeresspiegels und der Bedrohung von Ökosystemen. Um die negativen Auswirkungen zu stoppen, müssen wir dringend auf nachhaltige Energiequellen und eine Reduktion von Treibhausgasen setzen.
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Animation und angewandte Informatik (6 Std., davon 5 Übungen):</b> Grundlagen der
+                            Informatiksysteme, Umgang mit professioneller Software zur Medienbearbeitung, erste Einblicke in
+                            animationsspezifische Technologien und digitale Werkzeuge.<br />
+                            <b>Mediengestaltung-Animation (5 Std., davon 4 Übungen):</b> Grundlagen der Gestaltung (Farbe, Form,
+                            Komposition), zeichnerische Basistechniken, Entwicklung erster visueller Ideen und Konzepte für
+                            Animationen.<br />
+                            <b>Medienproduktion-Animation (7 Std., davon 7 Werkstättenlaboratorium):</b> Praktische Umsetzung
+                            einfacher 2D-Animationen, Erlernen grundlegender Produktionstechniken und Workflows, Experimente
+                            mit verschiedenen analogen und digitalen Animationstechniken.
                         </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Der Einstieg in Photoshop und die ersten eigenen 2D-Animationen sind super spannend! Manchmal
+                                    ist es viel auf einmal, aber die Lehrer helfen.</li>
+                                <li>Ich finde es gut, dass wir in Medienproduktion so viel praktisch arbeiten. Die Grundlagen im
+                                    Zeichnen sind aber auch wichtig.</li>
+                                <li>Die Verteilung der Tests ist okay, aber mehr Feedback zu den kreativen Arbeiten wäre manchmal
+                                    hilfreich.</li>
+                                <li>Manche wünschen sich klarere Aufgabenstellungen bei den ersten Kreativübungen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p>Der Klimawandel beschreibt die langfristige Veränderung der globalen Temperaturen und Wetterbedingungen, hauptsächlich durch menschliche Aktivitäten wie die Verbrennung fossiler Brennstoffe. Diese Veränderungen führen zu extremen Wetterereignissen, dem Anstieg des Meeresspiegels und der Bedrohung von Ökosystemen. Um die negativen Auswirkungen zu stoppen, müssen wir dringend auf nachhaltige Energiequellen und eine Reduktion von Treibhausgasen setzen.</p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Animation und angewandte Informatik (6 Std., davon 5 Übungen):</b> Vertiefung der
+                            Softwarekenntnisse (2D/3D), technische Aspekte der Animationspipeline, Datenmanagement und -formate.<br />
+                            <b>Medientheorie und Kunstgeschichte (2 Std.):</b> Einführung in die Geschichte der Animation,
+                            Analyse von Animationsstilen und -techniken, medienästhetische Grundlagen.<br />
+                            <b>Mediengestaltung-Animation (5 Std., davon 4 Übungen):</b> Character Design, Storyboarding,
+                            visuelle Entwicklung für Animationsprojekte, Layout und Komposition für bewegte Bilder.<br />
+                            <b>Medienproduktion-Animation (8 Std., davon 8 Werkstättenlaboratorium):</b> Fortgeschrittene
+                            2D-Animationstechniken, Einführung in die 3D-Modellierung und -Animation, Vertonungsgrundlagen.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Storyboarding und Character Design machen richtig Spaß! Die Einführung in 3D ist
+                                    herausfordernd, aber total interessant.</li>
+                                <li>Medientheorie gibt gute Hintergründe, könnte aber manchmal praxisnäher sein. Die
+                                    Animationsprojekte werden jetzt komplexer, das ist cool.</li>
+                                <li>Es gibt genug Praxisbezug, besonders in Medienproduktion. Manchmal fehlt aber die Zeit,
+                                    alles auszuprobieren.</li>
+                                <li>Der Umgang mit der neuen Software ist am Anfang anstrengend, aber nach einer Weile wird es besser.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p>Der Klimawandel beschreibt die langfristige Veränderung der globalen Temperaturen und Wetterbedingungen, hauptsächlich durch menschliche Aktivitäten wie die Verbrennung fossiler Brennstoffe. Diese Veränderungen führen zu extremen Wetterereignissen, dem Anstieg des Meeresspiegels und der Bedrohung von Ökosystemen. Um die negativen Auswirkungen zu stoppen, müssen wir dringend auf nachhaltige Energiequellen und eine Reduktion von Treibhausgasen setzen.</p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Animation und angewandte Informatik (6 Std., davon 5 Übungen):</b> Technische
+                            Umsetzung von 3D-Projekten, Pipeline-Management, Effekte und Compositing.<br />
+                            <b>Medientheorie und Medienpraxis (3 Std.):</b> Analyse und Entwicklung von Animationskonzepten,
+                            Kreativmethoden, Projektmanagement.<br />
+                            <b>Mediengestaltung-Animation (5 Std., davon 4 Übungen):</b> Storytelling, Visual Development,
+                            Animationstechniken in 3D, Konzeptentwicklung für größere Projekte.<br />
+                            <b>Medienproduktion-Animation (9 Std., davon 9 Werkstättenlaboratorium):</b> Produktion komplexer
+                            3D-Animationen, Vertonung, Schnitt, Postproduktion.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>3D-Projekte sind anspruchsvoll, aber man lernt viel dazu. Manchmal ist die Software sehr
+                                    ressourcenintensiv.</li>
+                                <li>Das Teamwork in größeren Projekten ist super, aber auch zeitaufwendig.</li>
+                                <li>Manchmal könnte die Theorie praxisnäher sein, vor allem bei Medienpraxis.</li>
+                                <li>Vertonung und Schnitt sind spannende neue Bereiche, die das Gesamtprojekt abrunden.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Animation und angewandte Informatik (7 Std., davon 6 Übungen):</b> Optimierung
+                            von Pipelines, Skripting, Automatisierung.<br />
+                            <b>Mediengestaltung-Animation (6 Std., davon 5 Übungen):</b> Fortgeschrittene Gestaltung,
+                            Spezialeffekte, Mixed Media.<br />
+                            <b>Medienproduktion-Animation (10 Std., davon 10 Werkstättenlaboratorium):</b> Realisierung von
+                            Animationsprojekten für Kunden, Projektmanagement, Qualitätskontrolle.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Arbeit an Kundenprojekten ist spannend und bereitet gut auf die Praxis vor.</li>
+                                <li>Automatisierung und Skripting sind neue Herausforderungen, die sehr nützlich sind.</li>
+                                <li>Die Arbeitsbelastung ist hoch, aber die Unterstützung durch Lehrer ist gut.</li>
+                                <li>Manche würden sich mehr Freiräume für eigene Projekte wünschen.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
+                    <div class="cont-title">5. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Animation und angewandte Informatik (7 Std., davon 6 Übungen):</b> Finalisierung
+                            von Abschlussprojekten, Vertiefung technischer Kompetenzen.<br />
+                            <b>Mediengestaltung-Animation (6 Std., davon 5 Übungen):</b> Professionelle Gestaltung,
+                            Portfolioerstellung.<br />
+                            <b>Medienproduktion-Animation (11 Std., davon 11 Werkstättenlaboratorium):</b> Abschlussprojekt,
+                            Präsentation, Praxisorientierung.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das Abschlussprojekt fordert viel Einsatz, aber man kann zeigen, was man gelernt hat.</li>
+                                <li>Portfolioarbeit ist hilfreich für Bewerbungen.</li>
+                                <li>Die Praxisorientierung wird als sehr gut bewertet.</li>
+                                <li>Manche wünschen sich mehr Feedback während des Projekts.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,4 +315,5 @@ function performLogout() {
         crossorigin="anonymous"></script>
     <script src="content.js"></script>
 </body>
+
 </html>

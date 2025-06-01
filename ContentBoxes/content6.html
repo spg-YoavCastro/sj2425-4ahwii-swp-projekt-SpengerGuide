@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,127 @@
     <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    updateUI(data);
+                })
+                .catch(error => console.error("Login-Check failed:", error));
+            }
+
+            function updateUI(data) {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+
+                if (data.loggedIn && data.user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+
+                    updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+                } else {
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    removeStatusDisplay();
+                }
+            }
+
+            function updateStatusDisplay(text) {
+                let statusDiv = document.getElementById('loginStatusDiv');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'loginStatusDiv';
+                    statusDiv.className = 'login-status';
+                    // Prepends to the parent of login/logout buttons
+                    document.querySelector('.d-flex').parentNode.prepend(statusDiv); 
+                }
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> ${text}
+                    </span>
+                `;
+            }
+
+            function removeStatusDisplay() {
+                const statusDiv = document.getElementById('loginStatusDiv');
+                if (statusDiv) statusDiv.remove();
+            }
+
+            function setupEventListeners() {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => {
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    });
+                }
+
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        fetch('/Spengerguide/Login/logout.php', {
+                            method: 'POST',
+                            credentials: 'include'
+                        })
+                        .then(() => {
+                            localStorage.removeItem('isLoggedIn');
+                            window.location.reload();
+                        })
+                        .catch(error => console.error("Logout failed:", error));
+                    });
+                }
+            }
+
+            checkLoginStatus();
+            setupEventListeners();
+            setInterval(checkLoginStatus, 120000);
+        });
+    </script>
+
+    <style>
+        .login-status {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Navbar (same as in all other pages) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <button onclick="Log()" class="button">
-                <span class="button-content">Login </span>
-            </button>
+            <div class="d-flex">
+                <button id="navbarLoginElement" class="button me-2">
+                    <span class="button-content">Login</span>
+                </button>
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                    <span class="button-content">Abmelden</span>
+                </button>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-        </a>
-        <div class="container-fluid">
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> <!-- Home link -->
+                        <a class="nav-link" href="../index.html">Start</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -35,77 +136,172 @@
                             Abteilungen
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                        <li><a class="dropdown-item" href="content1.html">Animation</a></li>
-                        <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
-                        <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
-                        <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
-                        <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
-                        <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
-                        <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
-                        <li><a class="dropdown-item" href="content6.html">Technisches Management und</a></li>
+                            <li><a class="dropdown-item" href="content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
                         </ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Services/service.html">Dienste</a> <!-- Services link -->
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> <!-- Contact link -->
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
 
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Technisches Management</h1>
-            <p style="font-weight: bold;">Das ist Technisches Management. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Technisches Management der Höheren Lehranstalt für Wirtschaftsingenieure. 
+                Hier finden Sie konkrete Angaben zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
+                    Die Absolventinnen und Absolventen können <b>eigenverantwortlich Aufgaben an der Schnittstelle von Technik und Management</b> wahrnehmen. 
+                    Sie sind in der Lage, Aufgaben im technischen und wirtschaftlichen Bereich in Produktionsbetrieben, 
+                    Dienstleistungsunternehmen und im Handel zu übernehmen. 
+                    Sie können Projekte leiten, Prozesse optimieren, Qualitätsstandards sichern und innovative Produkte entwickeln. 
+                    Typische Tätigkeitsfelder sind das technische Management, das Produktmanagement, das Prozessmanagement, das Qualitätsmanagement, 
+                    das Supply Chain Management, das Marketing und der Vertrieb technischer Produkte sowie die Unternehmensführung. 
                     Hier werdet ihr zu Prozessmanagern und Spezialisten für innovative Produkte an einer HTL mit Reifeprüfung ausgebildet.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Technisches Management (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Abteilung Technisches Management wird für ihre <b>umfassende Ausbildung an der Schnittstelle von Technik und Wirtschaft</b> sehr geschätzt. 
+                        Besonders positiv hervorgehoben werden die <b>praxisnahen Projekte im Qualitäts- und Prozessmanagement</b> und die 
+                        <b>Vorbereitung auf Führungspositionen</b>. Viele schätzen die <b>tiefe Einarbeitung in Bereiche wie Lean Management und Supply Chain Management</b>.
+                        Herausfordernd kann die <b>Vielfalt der zu erlernenden Disziplinen</b> von technischen Grundlagen bis zu komplexen Managementtheorien empfunden werden. 
+                        Ein Wunsch ist die <b>stärkere Betonung von Digitalisierung und Industrie 4.0</b> in der Produktion. Die 
+                        <b>Unterstützung durch Lehrkräfte</b>, die sowohl technisches als auch betriebswirtschaftliches Wissen vermitteln, wird als exzellent bewertet.
+                    </p>
+                </div>
             </div>
+
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Betriebswirtschaftliche Prozesse (BWP):</b> Grundlagen der Betriebswirtschaftslehre und des Rechnungswesens, Unternehmensführung, Marketing, Kostenrechnung, Grundlagen des Projektmanagements.<br />
+                            <b>Technische Informatik (TI):</b> Grundlagen der Informationstechnik, Hardware, Software, Netzwerke, Einführung in die Programmierung.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Der Einstieg ins Technische Management ist spannend, besonders die Verbindung von Wirtschaft und Technik.</li>
+                                <li>Die Grundlagen der Betriebswirtschaftslehre sind gut vermittelt und sehr nützlich.</li>
+                                <li>Manchmal ist die Menge an neuen Konzepten aus beiden Welten (Technik und Management) eine Herausforderung.</li>
+                                <li>Mehr praktische Übungen im Bereich Projektmanagement wären ein guter Start.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Betriebswirtschaftliche Prozesse (BWP):</b> Vertiefung in betriebswirtschaftliche Prozesse, Finanzmanagement, Investition, Finanzierung, Controlling-Grundlagen.<br />
+                            <b>Produktion und Qualitätsmanagement (PQM):</b> Einführung in Produktionstechnologien und Qualitätsmanagement, Fertigungsverfahren, Prozessplanung, Qualitätsbegriffe, Normen.<br />
+                            <b>Technische Informatik (TI):</b> Datenbanksysteme und Web-Technologien, Datenbankdesign, SQL, HTML, CSS, JavaScript.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Einführung in **Produktions- und Qualitätsmanagement** ist sehr aufschlussreich und relevant für die Industrie.</li>
+                                <li>Das Arbeiten mit **Datenbanksystemen** ist eine wertvolle Fähigkeit, die man hier lernt.</li>
+                                <li>Die Verknüpfung von Finanzmanagement und technischen Prozessen ist sehr interessant.</li>
+                                <li>Es wäre hilfreich, wenn mehr Zeit für die Vertiefung von aktuellen Produktionsmethoden zur Verfügung stünde.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Produktion und Qualitätsmanagement (PQM):</b> Prozessoptimierung, fortgeschrittenes Qualitätsmanagement (Lean Management, Six Sigma, QM-Systeme wie ISO 9001).<br />
+                            <b>Management und Controlling (MUC):</b> Strategisches Management und Controlling-Instrumente (SWOT-Analyse, Balanced Scorecard, Kennzahlen).<br />
+                            <b>Technische Informatik (TI):</b> Automatisierungstechnik und IoT im industriellen Kontext (SPS, Sensoren, Aktoren, IoT-Plattformen).<br />
+                            <b>Projekte und Produktentwicklung (PUP):</b> Erste Projektarbeit mit Fokus auf Produktentwicklung und agile Methoden.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Konzepte des **Lean Managements und Six Sigma** sind sehr anspruchsvoll, aber unglaublich nützlich für die Optimierung von Prozessen.</li>
+                                <li>Die Projekte im Bereich **Produktentwicklung** sind sehr motivierend und praxisnah.</li>
+                                <li>**Automatisierungstechnik** und die Integration von **IoT** sind hochaktuelle Themen.</li>
+                                <li>Einige wünschen sich mehr reale Fallstudien und Gastvorträge aus der Industrie.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Produktion und Qualitätsmanagement (PQM):</b> Supply Chain Management und Logistik (Beschaffung, Lagerhaltung, Distribution).<br />
+                            <b>Management und Controlling (MUC):</b> Internationales Management und Risikomanagement (Globale Märkte, Risikobewertung, Krisenmanagement).<br />
+                            <b>Projekte und Produktentwicklung (PUP):</b> Umfassende Projektarbeit: Konzeption, Entwicklung und Umsetzung technischer Produkte, Vorbereitung auf das Diplomprojekt.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Themen **Supply Chain Management und Logistik** sind sehr komplex, aber entscheidend für globale Unternehmen.</li>
+                                <li>Die **umfassenden Projekte** sind fordernd, aber man lernt sehr viel über Teamarbeit und Projektleitung.</li>
+                                <li>**Risikomanagement** ist ein sehr relevanter Bereich, der hier gut behandelt wird.</li>
+                                <li>Manchmal fühlt man sich vom Umfang der Themen erschlagen, aber die Lehrer sind sehr unterstützend und die Inhalte sind praxisrelevant.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
+                    <div class="cont-title">5. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Management und Controlling (MUC):</b> Unternehmensführung und Recht im technischen Umfeld (Unternehmensgründung, Patentrecht, Vertragsrecht).<br />
+                            <b>Projekte und Produktentwicklung (PUP):</b> **Diplomprojekt** – Eigenständige Realisierung eines komplexen technischen Managementprojekts, von der Ideenfindung bis zur Präsentation der Lösung; Fokus auf Problemlösung, Innovation und praktische Anwendung.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das **Diplomprojekt** ist der Höhepunkt der Ausbildung – man kann hier alle gelernten Fähigkeiten unter Beweis stellen.</li>
+                                <li>Die **Vorbereitung auf die Unternehmensführung** und rechtliche Aspekte ist hervorragend und bereitet gut auf die Selbstständigkeit oder Führungspositionen vor.</li>
+                                <li>Die Intensität ist sehr hoch, aber die Erfolgserlebnisse sind es wert, besonders wenn das eigene Projekt Gestalt annimmt.</li>
+                                <li>Mehr Möglichkeiten zur Vertiefung individueller Interessen innerhalb des Lehrplans, beispielsweise in speziellen Industriezweigen, wären wünschenswert.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -114,7 +310,10 @@
         <p>© 2024 Spengerguide. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="content.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,127 @@
     <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    updateUI(data);
+                })
+                .catch(error => console.error("Login-Check failed:", error));
+            }
+
+            function updateUI(data) {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+
+                if (data.loggedIn && data.user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+
+                    updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
+                } else {
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    removeStatusDisplay();
+                }
+            }
+
+            function updateStatusDisplay(text) {
+                let statusDiv = document.getElementById('loginStatusDiv');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'loginStatusDiv';
+                    statusDiv.className = 'login-status';
+                    // Prepends to the parent of login/logout buttons
+                    document.querySelector('.d-flex').parentNode.prepend(statusDiv); 
+                }
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> ${text}
+                    </span>
+                `;
+            }
+
+            function removeStatusDisplay() {
+                const statusDiv = document.getElementById('loginStatusDiv');
+                if (statusDiv) statusDiv.remove();
+            }
+
+            function setupEventListeners() {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => {
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    });
+                }
+
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        fetch('/Spengerguide/Login/logout.php', {
+                            method: 'POST',
+                            credentials: 'include'
+                        })
+                        .then(() => {
+                            localStorage.removeItem('isLoggedIn');
+                            window.location.reload();
+                        })
+                        .catch(error => console.error("Logout failed:", error));
+                    });
+                }
+            }
+
+            checkLoginStatus();
+            setupEventListeners();
+            setInterval(checkLoginStatus, 120000);
+        });
+    </script>
+
+    <style>
+        .login-status {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Navbar (same as in all other pages) -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <button onclick="Log()" class="button">
-                <span class="button-content">Login </span>
-            </button>
+            <div class="d-flex">
+                <button id="navbarLoginElement" class="button me-2">
+                    <span class="button-content">Login</span>
+                </button>
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                    <span class="button-content">Abmelden</span>
+                </button>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-        </a>
-        <div class="container-fluid">
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html" aria-current="page">Start</a> <!-- Home link -->
+                        <a class="nav-link" href="../index.html">Start</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -35,77 +136,176 @@
                             Abteilungen
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                        <li><a class="dropdown-item" href="content1.html">Animation</a></li>
-                        <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
-                        <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
-                        <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
-                        <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
-                        <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
-                        <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
-                        <li><a class="dropdown-item" href="content6.html">Technisches Management und</a></li>
+                            <li><a class="dropdown-item" href="content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="content6.html">Technisches Management</a></li>
                         </ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a> <!-- Q&A link -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Services/service.html">Dienste</a> <!-- Services link -->
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a> <!-- Contact link -->
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
-    <!-- Content Section -->
     <section id="content-section">
         <div class="container">
             <h1>Gamedesign</h1>
-            <p style="font-weight: bold;">Das ist Gamedesign. Hier können Sie konkrete Angaben machen.</p>
+            <p class="intro-bold">
+                Das ist die Abteilung Gamedesign der Höheren Lehranstalt für Medien. Hier finden Sie konkrete Angaben
+                zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
+            </p>
             <div class="preview">
                 <p>
-                    In dieser Abteilung erhältst du fundiertes Wissen über die verschiedenen Entwicklungsprozesse eines Spiels – von der ersten Idee bis zur Vermarktung. Dabei spielen nicht nur Programmierung und Design eine Rolle, sondern auch psychologische und technische Aspekte, die das Spielerlebnis beeinflussen.
+                    Die Absolventinnen und Absolventen der Höheren Lehranstalt für Medien mit Schwerpunkt Gamedesign können 
+                    <b>multimediale Projekte im Rahmen von Gamedesign</b> von der <b>Konzeptionierung bis zum getesteten Produkt realisieren</b>.
+                    Sie sind in der Lage, eigenständig die Konzeption, Planung, Gestaltung und Herstellung von medialen Produkten 
+                    sowie die Umsetzung von medialen Projekten durchzuführen, die der multimedialen Kommunikation bzw. Interaktion dienen. 
+                    Ihr Wissen umfasst handwerkliches, technisches und medientheoretisches Fachwissen, um kreative Entwürfe und Präsentationen zu erstellen und diese für die Produktion in verschiedenen Medien zu entwickeln. 
+                    Typische Tätigkeitsfelder sind die Spieleentwicklung, Gamedesign, sowie die Arbeit in Kommunikationsbetrieben, 
+                    Medienunternehmen und Softwarehäusern. Die Leitung von Projekten und die Führung von Mitarbeitern zählen ebenfalls zu ihren Aufgaben.
                 </p>
+                <div class="department-feedback-summary">
+                    <h5 class="feedback-heading">
+                        Das sagen Schüler:innen über die Abteilung Gamedesign (Zusammenfassung fiktiver Umfrageergebnisse):
+                    </h5>
+                    <p>
+                        Die Gamedesign-Abteilung wird für ihre <b>kreative und technische Ausbildung</b> in der Spieleentwicklung sehr geschätzt. Besonders positiv 
+                        hervorgehoben werden die <b>praxisnahen Projekte</b> und die Möglichkeit, eigene Spielideen zu realisieren. Viele schätzen die <b>tiefe Einarbeitung 
+                        in Game Engines und 2D-/3D-Software</b>.
+                        Herausfordernd kann die <b>Vielfalt der benötigten Fähigkeiten</b> von Programmierung bis Kunst empfunden werden. 
+                        Ein Wunsch ist die <b>stärkere Betonung von aktuellen Trends</b> in der Spieleindustrie und der Indie-Game-Entwicklung. 
+                        Die <b>Unterstützung durch spezialisierte Lehrkräfte</b> in allen Bereichen des Gamedesigns wird als exzellent bewertet.
+                    </p>
+                </div>
             </div>
+
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1 Jahrgang</div>
+                    <div class="cont-title">1. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Gamedesign und angewandte Informatik (6 Std., davon 5 Übungen):</b> Grundlagen der Spieleprogrammierung, Einführung in Game Engines, grundlegende 2D- und 3D-Softwareanwendungen.<br />
+                            <b>Mediengestaltung-Gamedesign (5 Std., davon 4 Übungen):</b> Einführung in Concept Art, Charakterdesign und visuelles Storytelling für Spiele.<br />
+                            <b>Medienproduktion-Gamedesign (7 Std., davon 7 Übungen):</b> Grundlagen des Game Production Workflows, Projektsetup und erste interaktive Prototypen.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Der Einstieg in die <b>Spieleentwicklung</b> ist spannend und man lernt schnell erste Prototypen zu erstellen.</li>
+                                <li>Die kreativen Aspekte wie <b>Concept Art</b> sind sehr motivierend.</li>
+                                <li>Manchmal ist die Menge an neuen Softwaretools überwältigend, aber die praktischen Übungen helfen.</li>
+                                <li>Mehr freie Projekte zur Entfaltung eigener Ideen wären toll.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2 Jahrgang</div>
+                    <div class="cont-title">2. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Gamedesign und angewandte Informatik (6 Std., davon 5 Übungen):</b> Vertiefung der Spieleprogrammierung, objektorientierte Programmierung für Spiele, Interaktionsdesign.<br />
+                            <b>Mediengestaltung-Gamedesign (5 Std., davon 4 Übungen):</b> Fortgeschrittenes Concept Art, Umgebungsdesign und UI/UX für Spiele.<br />
+                            <b>Medienproduktion-Gamedesign (8 Std., davon 8 Übungen):</b> Entwicklung von Game Mechanics, Leveldesign und frühe Testphasen.<br />
+                            <b>Medientheorie und Kunstgeschichte (2 Std.):</b> Einführung in Gametheorie und Game History.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Arbeit an <b>Game Mechanics</b> und <b>Leveldesign</b> ist sehr herausfordernd und bereichernd.</li>
+                                <li><b>Gametheorie</b> bietet interessante Perspektiven auf das Medium Spiel.</li>
+                                <li>Die Übungen im Labor sind eine tolle Möglichkeit, das Gelernte direkt umzusetzen und zu sehen, wie Spiele entstehen.</li>
+                                <li>Es wäre hilfreich, wenn mehr Zeit für die Vertiefung von speziellen Themen wie Multiplayer-Spielen zur Verfügung stünde.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3 Jahrgang</div>
+                    <div class="cont-title">3. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Gamedesign und angewandte Informatik (6 Std., davon 5 Übungen):</b> Scripting für Game Engines, Shader-Entwicklung und fortgeschrittene Grafikprogrammierung.<br />
+                            <b>Mediengestaltung-Gamedesign (5 Std., davon 4 Übungen):</b> Charakteranimation, fortgeschrittene 3D-Modellierung und visuelle Effekte für Spiele.<br />
+                            <b>Medienproduktion-Gamedesign (8 Std., davon 8 Übungen):</b> Team-basierte Game-Projekte, Versionskontrolle und agile Entwicklungsmethoden.<br />
+                            <b>Medienwirtschaft (2 Std.):</b> Einführung in das Geschäft der Spieleindustrie und Monetarisierungsmodelle.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Arbeit an komplexen <b>3D-Modellen und Animationen</b> macht viel Spaß und ist visuell ansprechend.</li>
+                                <li>Die <b>Teamprojekte</b> sind sehr realitätsnah und man lernt viel über Zusammenarbeit.</li>
+                                <li>Die Themen <b>Shader und Grafikprogrammierung</b> sind anspruchsvoll, aber sehr lohnend.</li>
+                                <li>Einige wünschen sich mehr aktuelle Beispiele und Fallstudien aus der Indie-Game-Entwicklung.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4 Jahrgang</div>
+                    <div class="cont-title">4. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Gamedesign und angewandte Informatik (4 Std., davon 4 Übungen):</b> Optimierungstechniken, Netzwerkprogrammierung in Spielen und fortgeschrittene Game Physics.<br />
+                            <b>Mediengestaltung-Gamedesign (4 Std., davon 4 Übungen):</b> Portfolioentwicklung, fortgeschrittenes Rendering und spezialisierte Art Pipelines.<br />
+                            <b>Medienproduktion-Gamedesign (8 Std., davon 8 Übungen):</b> Umfassende Game Production, Testen und Qualitätssicherung.<br />
+                            <b>Medienprojekte (3 Std., davon 3 Übungen):</b> Fokus auf die Entwicklung und Verfeinerung von Game-Prototypen.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Die Projekte werden sehr groß und fordernd, aber man lernt enorm viel über <b>Teamwork und Projektmanagement</b>.</li>
+                                <li>Das <b>Testen von Spielen</b> ist essenziell und wird hier detailliert behandelt.</li>
+                                <li>Die Kurse zu <b>Netzwerkprogrammierung</b> sind sehr relevant für moderne Spiele.</li>
+                                <li>Manchmal fühlt man sich vom Umfang der Themen erschlagen, aber die Lehrer sind sehr unterstützend.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5 Jahrgang</div>
+                    <div class="cont-title">5. Jahrgang</div>
+                    <i class="bi bi-chevron-down toggle-icon"></i>
                     <div class="extra-content">
-                        <p></p>
+                        <p class="curriculum-points">
+                            <b>Lehrplan-Schwerpunkte:</b><br />
+                            <b>Medientechnologie-Gamedesign und angewandte Informatik (4 Std., davon 4 Übungen):</b> Vertiefung in komplexen Game-Lösungen, Vorbereitung auf das Diplomprojekt.<br />
+                            <b>Mediengestaltung-Gamedesign (4 Std., davon 4 Übungen):</b> Master-Level Art Direction, stilistische Konsistenz und innovative visuelle Lösungen.<br />
+                            <b>Medienproduktion-Gamedesign (9 Std., davon 9 Übungen):</b> <b>Diplomprojekt</b> – eigenständige Realisierung eines umfassenden Game-Projekts von der Konzeption bis zur Implementierung und Präsentation.<br />
+                            <b>Medienprojekte (3 Std., davon 3 Übungen):</b> Finalisierung und Präsentation großer Game-Projekte.
+                        </p>
+                        <div class="student-feedback-section">
+                            <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
+                            <ul>
+                                <li>Das <b>Diplomprojekt</b> ist der Höhepunkt der Ausbildung – man kann zeigen, was man alles gelernt hat!</li>
+                                <li>Die Vorbereitung auf die Praxis ist hervorragend, besonders durch die Arbeit an realen Problemen der Spieleentwicklung.</li>
+                                <li>Die Intensität ist sehr hoch, aber die Erfolgserlebnisse sind es wert.</li>
+                                <li>Mehr Möglichkeiten zur Vertiefung individueller Interessen innerhalb des Lehrplans wären super.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -114,7 +314,10 @@
         <p>© 2024 Spengerguide. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="content.js"></script>
 </body>
+
 </html>
