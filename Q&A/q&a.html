@@ -4,87 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q&A</title>
+    <title>Spengerguide Q&A</title>
     <link rel="stylesheet" href="../loginBtn.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="q&a.css">
-    
-    <!-- Bootstrap Icons -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- Einheitliches Login-Script für alle Seiten -->
     <script>
-    // Funktion zum Login-Status-Check
-    function checkLoginStatus() {
-        fetch('/Spengerguide/Login/session_status.php', {
-            credentials: 'include'
-        })
-        .then(response => response.json())
-        .then(data => {
-            const loginBtn = document.getElementById('navbarLoginElement');
-            const logoutBtn = document.getElementById('navbarLogoutElement');
-            
-            if (data.loggedIn) {
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (logoutBtn) logoutBtn.style.display = 'block';
-                
-                // Status-Anzeige
-                let statusDiv = document.getElementById('loginStatusDiv');
-                if (!statusDiv) {
-                    statusDiv = document.createElement('div');
-                    statusDiv.id = 'loginStatusDiv';
-                    statusDiv.className = 'login-status';
-                    document.querySelector('.navbar').prepend(statusDiv);
-                }
-                statusDiv.innerHTML = `
-                    <span style="color: green; margin-right: 15px;">
-                        <i class="bi bi-person-check"></i> Eingeloggt als ${data.user?.name || 'Benutzer'}
-                    </span>
-                `;
-            } else {
-                if (loginBtn) loginBtn.style.display = 'block';
-                if (logoutBtn) logoutBtn.style.display = 'none';
-                const statusDiv = document.getElementById('loginStatusDiv');
-                if (statusDiv) statusDiv.remove();
-            }
-        })
-        .catch(error => console.error("Login-Check fehlgeschlagen:", error));
-    }
-
-    // Initialisierung nach DOM-Load
-    document.addEventListener('DOMContentLoaded', function() {
-        checkLoginStatus();
-        
-        // Logout-Handler
-        const logoutBtn = document.getElementById('navbarLogoutElement');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function() {
-                fetch('/Spengerguide/Login/logout.php', {
+        // Funktion zum Login-Status-Check
+        function checkLoginStatus() {
+            fetch('/Spengerguide/Login/session_status.php', {
                     credentials: 'include'
                 })
-                .then(() => {
-                    window.location.reload();
+                .then(response => response.json())
+                .then(data => {
+                    const loginBtn = document.getElementById('navbarLoginElement');
+                    const logoutBtn = document.getElementById('navbarLogoutElement');
+
+                    if (data.loggedIn) {
+                        if (loginBtn) loginBtn.style.display = 'none';
+                        if (logoutBtn) logoutBtn.style.display = 'block';
+
+                        // Status-Anzeige
+                        let statusDiv = document.getElementById('loginStatusDiv');
+                        if (!statusDiv) {
+                            statusDiv = document.createElement('div');
+                            statusDiv.id = 'loginStatusDiv';
+                            statusDiv.className = 'login-status';
+                            document.querySelector('.navbar').prepend(statusDiv);
+                        }
+                        statusDiv.innerHTML = `
+                            <span style="color: green; margin-right: 15px;">
+                                <i class="bi bi-person-check"></i> Eingeloggt als ${data.user?.name || 'Benutzer'}
+                            </span>
+                        `;
+                    } else {
+                        if (loginBtn) loginBtn.style.display = 'block';
+                        if (logoutBtn) logoutBtn.style.display = 'none';
+                        const statusDiv = document.getElementById('loginStatusDiv');
+                        if (statusDiv) statusDiv.remove();
+                    }
+                })
+                .catch(error => console.error("Login-Check fehlgeschlagen:", error));
+        }
+
+        // Initialisierung nach DOM-Load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+
+            // Logout-Handler
+            const logoutBtn = document.getElementById('navbarLogoutElement');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    fetch('/Spengerguide/Login/logout.php', {
+                            credentials: 'include'
+                        })
+                        .then(() => {
+                            window.location.reload();
+                        });
                 });
-            });
-        }
-        
-        // Login-Handler
-        const loginBtn = document.getElementById('navbarLoginElement');
-        if (loginBtn) {
-            loginBtn.addEventListener('click', function() {
-                window.location.href = '/Spengerguide/Login/login.html';
-            });
-        }
-    });
+            }
+
+            // Login-Handler
+            const loginBtn = document.getElementById('navbarLoginElement');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    window.location.href = '/Spengerguide/Login/login.html';
+                });
+            }
+        });
     </script>
 </head>
 
-<body style="background-color: lightblue">
-    <!-- Navbar (konsistent mit allen Seiten) -->
-    <nav class="navbar navbar-expand-lg navbar-light bgnav">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bgnav sticky-top">
         <div class="container-fluid">
-            <!-- Login/Logout Buttons -->
             <button id="navbarLoginElement" class="button me-2">
                 <span class="button-content">Login</span>
             </button>
@@ -92,13 +88,11 @@
                 <span class="button-content">Abmelden</span>
             </button>
 
-            <!-- Hamburger Menu -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -134,27 +128,41 @@
         </div>
     </nav>
 
-    <!-- Hauptinhalt -->
-    <div class="container">
-        <h1>Q&A Page</h1>
-        <p>Hier kannst du Fragen und Antworten unserer User einsehen und selbst Fragen stellen.</p>
-    </div>
-    <div class="container mt-4">
-        <form id="frageForm">
-            <div class="mb-3">
-                <label for="frage" class="form-label">Stelle eine Frage:</label>
-                <textarea class="form-control" id="frage" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Absenden</button>
-        </form>
-        <div id="fragenListe" class="mt-5">
-            <h3>Gestellte Fragen:</h3>
-            <ul id="fragen" class="list-group"></ul>
+    <section class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="display-3">Your Questions, Our Answers</h1>
+            <p class="lead">Engage with the community, get answers to your queries, and share your knowledge.</p>
         </div>
-    </div>
+    </section>
 
-    <footer class="bg-light text-center py-4">
-        <p>© 2024 Spengerguide. All Rights Reserved.</p>
+    <main class="container py-5">
+        <section class="question-submission mb-5">
+            <h2 class="text-center mb-4">Stelle eine neue Frage</h2>
+            <div class="card p-4 shadow-sm">
+                <form id="frageForm">
+                    <div class="mb-3">
+                        <label for="frage" class="form-label visually-hidden">Deine Frage</label>
+                        <textarea class="form-control" id="frage" rows="4" placeholder="Schreibe hier deine Frage..." required></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Frage absenden</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="questions-list">
+            <h2 class="text-center mb-4">Gestellte Fragen</h2>
+            <div id="fragenListe">
+                <ul id="fragen" class="list-unstyled row row-cols-1 g-4"></ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 Spengerguide. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script src="q&a.js"></script>

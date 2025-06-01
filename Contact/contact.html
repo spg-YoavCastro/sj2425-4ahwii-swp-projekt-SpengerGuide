@@ -1,255 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <title>Contact Us - Spengerguide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="contact.css">
-    
-    <!-- Bootstrap Icons -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- Login-System -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 1. Elemente selektieren
-        const loginBtn = document.getElementById('navbarLoginElement');
-        const logoutBtn = document.getElementById('navbarLogoutElement');
-        
-        // 2. Login-Status prüfen
-        function checkLoginStatus() {
-            fetch('/Spengerguide/Login/session_status.php', {
-                credentials: 'include'
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Network error');
-                return response.json();
-            })
-            .then(data => {
-                updateUI(data);
-            })
-            .catch(error => {
-                console.error("Login-Check failed:", error);
-                // Fallback: Lokalen Status prüfen
-                if (localStorage.getItem('isLoggedIn') === 'true') {
-                    updateUI({loggedIn: true, user: {name: 'Benutzer'}});
-                }
-            });
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Elemente selektieren
+            const loginBtn = document.getElementById('navbarLoginElement');
+            const logoutBtn = document.getElementById('navbarLogoutElement');
 
-        // 3. UI aktualisieren
-        function updateUI(data) {
-            if (data.loggedIn) {
-                // Eingeloggt
-                localStorage.setItem('isLoggedIn', 'true');
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (logoutBtn) logoutBtn.style.display = 'block';
-                
-                // Status-Anzeige
-                let statusDiv = document.getElementById('loginStatusDiv');
-                if (!statusDiv) {
-                    statusDiv = document.createElement('div');
-                    statusDiv.id = 'loginStatusDiv';
-                    statusDiv.className = 'login-status';
-                    const navbar = document.querySelector('.navbar');
-                    if (navbar) {
-                        navbar.insertBefore(statusDiv, navbar.firstChild);
-                    }
-                }
-                statusDiv.innerHTML = `
-                    <span style="color: green; margin-right: 15px;">
-                        <i class="bi bi-person-check"></i> Eingeloggt als ${data.user?.name || 'Benutzer'}
-                    </span>
-                `;
-            } else {
-                // Ausgeloggt
-                localStorage.removeItem('isLoggedIn');
-                if (loginBtn) loginBtn.style.display = 'block';
-                if (logoutBtn) logoutBtn.style.display = 'none';
-                const statusDiv = document.getElementById('loginStatusDiv');
-                if (statusDiv) statusDiv.remove();
+            // 2. Login-Status prüfen
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                        credentials: 'include'
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network error');
+                        return response.json();
+                    })
+                    .then(data => {
+                        updateUI(data);
+                    })
+                    .catch(error => {
+                        console.error("Login-Check failed:", error);
+                        // Fallback: Lokalen Status prüfen
+                        if (localStorage.getItem('isLoggedIn') === 'true') {
+                            updateUI({
+                                loggedIn: true,
+                                user: {
+                                    name: 'Benutzer'
+                                }
+                            });
+                        }
+                    });
             }
-        }
 
-        // 4. Logout-Funktion
-        function performLogout() {
-            fetch('/Spengerguide/Login/logout.php', {
-                method: 'POST',
-                credentials: 'include'
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Logout failed');
-                return response.json();
-            })
-            .then(() => {
-                localStorage.removeItem('isLoggedIn');
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error("Logout error:", error);
-                alert('Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
-            });
-        }
+            // 3. UI aktualisieren
+            function updateUI(data) {
+                if (data.loggedIn) {
+                    // Eingeloggt
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
 
-        // 5. Event-Handler
-        if (loginBtn) {
-            loginBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.location.href = '/Spengerguide/Login/login.html';
-            });
-        }
+                    // Status-Anzeige
+                    let statusDiv = document.getElementById('loginStatusDiv');
+                    if (!statusDiv) {
+                        statusDiv = document.createElement('div');
+                        statusDiv.id = 'loginStatusDiv';
+                        statusDiv.className = 'login-status'; // me-3 removed as it's added via CSS
+                        const navbar = document.querySelector('.navbar');
+                        if (navbar) {
+                            navbar.insertBefore(statusDiv, navbar.firstChild);
+                        }
+                    }
+                    statusDiv.innerHTML = `
+                        <span>
+                            <i class="bi bi-person-check-fill"></i> Eingeloggt als ${data.user?.name || 'Benutzer'}
+                        </span>
+                    `;
+                } else {
+                    // Ausgeloggt
+                    localStorage.removeItem('isLoggedIn');
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    const statusDiv = document.getElementById('loginStatusDiv');
+                    if (statusDiv) statusDiv.remove();
+                }
+            }
 
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                performLogout();
-            });
-        }
+            // 4. Logout-Funktion
+            function performLogout() {
+                fetch('/Spengerguide/Login/logout.php', {
+                        method: 'POST',
+                        credentials: 'include'
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Logout failed');
+                        return response.json();
+                    })
+                    .then(() => {
+                        localStorage.removeItem('isLoggedIn');
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error("Logout error:", error);
+                        alert('Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+                    });
+            }
 
-        // Initialen Status prüfen
-        checkLoginStatus();
-    });
+            // 5. Event-Handler
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = '/Spengerguide/Login/login.html';
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    performLogout();
+                });
+            }
+
+            // Initialen Status prüfen
+            checkLoginStatus();
+        });
     </script>
-
-    <style>
-    .login-status {
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        font-size: 0.9rem;
-    }
-    #navbarLogoutElement {
-        display: none;
-    }
-    .bgnav {
-        background-color: #f8f9fa !important;
-        padding: 10px 0;
-    }
-    </style>
 </head>
 
-<body style="background-color: lightblue;">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bgnav">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bgnav sticky-top">
         <div class="container-fluid">
-            <!-- Login/Logout Buttons -->
             <div>
-                <button id="navbarLoginElement" class="button">
+                <button id="navbarLoginElement" class="button me-2">
                     <span class="button-content">Login</span>
                 </button>
-                <button id="navbarLogoutElement" class="button">
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
                     <span class="button-content">Abmelden</span>
                 </button>
             </div>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html">Start</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Abteilungen
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                                <li><a class="dropdown-item" href="../ContentBoxes/content1.html">Animation</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content3.html">Betriebsinformatik</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content4.html">Gamedesign</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content2.html">Informatik</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content8.html">Informationstechnik - Fachschule</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content7.html">Interior- und Surfacedesign</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content5.html">Medizininformatik</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content6.html">Technisches Management</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../Services/service.html">Dienste</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="contact.html">Kontakt</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Start</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Abteilungen
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
+                            <li><a class="dropdown-item" href="../ContentBoxes/content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content6.html">Technisches Management</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Services/service.html">Dienste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contact.html">Kontakt</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Contact Section -->
-    <div class="container">
-        <h1>Contact Us</h1>
-        <div class="row">
+    <main class="container py-5">
+        <section class="contact-info mb-5">
+            <h1 class="section-title text-center mb-5">Contact Us</h1>
+            <p class="lead text-center mb-5">We're here to answer your questions and hear your feedback.</p>
+            <h2 class="section-subtitle text-center mb-5">Our Team</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+                <div class="col">
+                    <div class="contact-card animate-fade-in">
+                        <h5 class="card-title">Yoav Castro</h5>
+                        <p class="card-subtitle mb-2 text-muted">Projektleiter</p>
+                        <hr>
+                        <p class="card-text"><i class="bi bi-envelope-fill me-2"></i>E-Mail:</p>
+                        <p class="card-text fw-bold">CAS210320@spengergasse.at</p>
+                    </div>
+                </div>
 
-            <!-- Yoav Castro -->
-            <div class="col-lg-4 col-12">
-                <div class="contact-card">
-                    <h5>Yoav Castro</h5>
-                    <p>Projektleiter</p>
-                    <p style="margin-bottom: 0px;">E-Mail:</p>
-                    <p style="margin-bottom: 0px;">CAS210320@spengergasse.at</p>
+                <div class="col">
+                    <div class="contact-card animate-fade-in delay-1">
+                        <h5 class="card-title">Edvin Gradascevic</h5>
+                        <p class="card-subtitle mb-2 text-muted">Projektmitglied</p>
+                        <hr>
+                        <p class="card-text"><i class="bi bi-envelope-fill me-2"></i>E-Mail:</p>
+                        <p class="card-text fw-bold">GRA22087@spengergasse.at</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="contact-card animate-fade-in delay-2">
+                        <h5 class="card-title">Nina Aschenbrenner</h5>
+                        <p class="card-subtitle mb-2 text-muted">Projektmitglied</p>
+                        <hr>
+                        <p class="card-text"><i class="bi bi-envelope-fill me-2"></i>E-Mail:</p>
+                        <p class="card-text fw-bold">ASC22258@spengergasse.at</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="contact-card animate-fade-in delay-3">
+                        <h5 class="card-title">Luka Janjic</h5>
+                        <p class="card-subtitle mb-2 text-muted">Projektmitglied</p>
+                        <hr>
+                        <p class="card-text"><i class="bi bi-envelope-fill me-2"></i>E-Mail:</p>
+                        <p class="card-text fw-bold">JAN210325@spengergasse.at</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="contact-card animate-fade-in delay-4">
+                        <h5 class="card-title">Branka Kabic</h5>
+                        <p class="card-subtitle mb-2 text-muted">Projektmitglied</p>
+                        <hr>
+                        <p class="card-text"><i class="bi bi-envelope-fill me-2"></i>E-Mail:</p>
+                        <p class="card-text fw-bold">KAB210326@spengergasse.at</p>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Edvin Gradascevic -->
-            <div class="col-lg-4 col-12">
-                <div class="contact-card">
-                    <h5>Edvin Gradascevic</h5>
-                    <p>Projektmitglied</p>
-                    <p style="margin-bottom: 0px;">E-Mail:</p>
-                    <p style="margin-bottom: 0px;">GRA22087@spengergasse.at</p>
-                </div>
-            </div>
+        </section>
+    </main>
 
-            <!-- Nina Aschenbrenner -->
-            <div class="col-lg-4 col-12">
-                <div class="contact-card">
-                    <h5>Nina Aschenbrenner</h5>
-                    <p>Projektmitglied</p>
-                    <p style="margin-bottom: 0px;">E-Mail:</p>
-                    <p style="margin-bottom: 0px;">ASC22258@spengergasse.at</p>
-                </div>
-            </div>
-
-            <!-- Luka Janjic -->
-            <div class="col-lg-4 col-12">
-                <div class="contact-card">
-                    <h5>Luka Janjic</h5>
-                    <p>Projektmitglied</p>
-                    <p style="margin-bottom: 0px;">E-Mail:</p>
-                    <p style="margin-bottom: 0px;">JAN210325@spengergasse.at</p>
-                </div>
-            </div>
-
-            <!-- Branka Kabic -->
-            <div class="col-lg-4 col-12">
-                <div class="contact-card" style="margin-bottom: 50px;">
-                    <h5>Branka Kabic</h5>
-                    <p>Projektmitglied</p>
-                    <p style="margin-bottom: 0px;">E-Mail:</p>
-                    <p style="margin-bottom: 0px;">KAB210326@spengergasse.at</p>
-                </div>
+    <footer class="footer bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-0">© 2024 Spengerguide. All Rights Reserved.</p>
+            <div class="social-icons mt-2">
+                <a href="#" class="text-white mx-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-instagram"></i></a>
             </div>
         </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-light text-center py-4">
-        <p>© 2024 Spengerguide. All Rights Reserved.</p>
     </footer>
+
     <script src="contact.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

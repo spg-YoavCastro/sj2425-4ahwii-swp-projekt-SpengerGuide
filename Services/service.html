@@ -4,16 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services</title>
+    <title>Services - Spengerguide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../loginBtn.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="services.css">
     
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- Login-System -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 1. Elemente selektieren
@@ -61,8 +60,8 @@
                     }
                 }
                 statusDiv.innerHTML = `
-                    <span style="color: green; margin-right: 15px;">
-                        <i class="bi bi-person-check"></i> Eingeloggt als ${data.user?.name || 'Benutzer'}
+                    <span>
+                        <i class="bi bi-person-check-fill"></i> Eingeloggt als ${data.user?.name || 'Benutzer'}
                     </span>
                 `;
             } else {
@@ -115,29 +114,16 @@
     });
     </script>
 
-    <style>
-    .login-status {
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        font-size: 0.9rem;
-    }
-    #navbarLogoutElement {
-        display: none;
-    }
-    </style>
-</head>
+    </head>
 
-<body style="background-color: lightblue;">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bgnav">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bgnav sticky-top">
         <div class="container-fluid">
-            <!-- Login/Logout Buttons -->
             <div>
-                <button id="navbarLoginElement" class="button">
+                <button id="navbarLoginElement" class="button me-2">
                     <span class="button-content">Login</span>
                 </button>
-                <button id="navbarLogoutElement" class="button">
+                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
                     <span class="button-content">Abmelden</span>
                 </button>
             </div>
@@ -148,56 +134,133 @@
             </button>
         </div>
 
-            <div class="container-fluid">
-                
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html" aria-current="page">Start</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Abteilungen
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-                                <li><a class="dropdown-item" href="../ContentBoxes/content1.html">Animation</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content3.html">Betriebsinformatik</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content4.html">Gamedesign</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content2.html">Informatik</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content8.html">Informationstechnik - Fachschule</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content7.html">Interior- und Surfacedesign</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content5.html">Medizininformatik</a></li>
-                                <li><a class="dropdown-item" href="../ContentBoxes/content6.html">Technisches Management und Umwelt</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="service.html">Dienste</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html" aria-current="page">Start</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Abteilungen
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
+                            <li><a class="dropdown-item" href="../ContentBoxes/content1.html">Animation</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content3.html">Betriebsinformatik</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content4.html">Gamedesign</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content2.html">Informatik</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content8.html">Informationstechnik - Fachschule</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content7.html">Interior- und Surfacedesign</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content5.html">Medizininformatik</a></li>
+                            <li><a class="dropdown-item" href="../ContentBoxes/content6.html">Technisches Management und Umwelt</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Q&A/q&a.html">Q&A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="service.html">Dienste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Contact/contact.html">Kontakt</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container">
-        <h1>Our Services</h1>
-        <p class="text-center">Spengerguide unterstützt Schüler:innen, Eltern und Interessierte bei der Wahl und
-            Orientierung in der HTL Spengergasse.</p>
+    <main>
+        <section class="hero-section text-center">
+            <div class="container">
+                <h1 class="section-title text-white">Our Services</h1>
+                <p class="lead mb-0">Spengerguide unterstützt Schüler:innen, Eltern und Interessierte bei der Wahl und
+                    Orientierung in der HTL Spengergasse.</p>
+            </div>
+        </section>
 
-        <!-- Rest des Inhalts bleibt unverändert -->
-        ...
-    </div>
+        <section class="container py-5">
+            <h2 class="section-subtitle text-center mb-5">Was wir bieten</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+                <div class="col">
+                    <div class="service-card animate-fade-in">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-book-half"></i>
+                        </div>
+                        <h5 class="card-title">Detaillierte Abteilungsübersichten</h5>
+                        <p class="card-text">
+                            Tiefgehende Informationen zu jedem Ausbildungszweig, Lehrplänen und Schwerpunkten.
+                        </p>
+                    </div>
+                </div>
 
-    <footer class="bg-light text-center py-4">
-        <p>© 2024 SpengerHub. All Rights Reserved.</p>
+                <div class="col">
+                    <div class="service-card animate-fade-in delay-1">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <h5 class="card-title">Veranstaltungskalender</h5>
+                        <p class="card-text">
+                            Bleiben Sie auf dem Laufenden über Info-Tage, Workshops und wichtige Termine.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="service-card animate-fade-in delay-2">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
+                        <h5 class="card-title">Q&A Forum</h5>
+                        <p class="card-text">
+                            Stellen Sie Fragen und erhalten Sie Antworten von Schülern, Lehrern und der Schulgemeinschaft.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="service-card animate-fade-in delay-3">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h5 class="card-title">Projektvorstellungen</h5>
+                        <p class="card-text">
+                            Einblicke in aktuelle Schülerprojekte und Erfolgsgeschichten der HTL Spengergasse.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="service-card animate-fade-in delay-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h5 class="card-title">Karriereperspektiven</h5>
+                        <p class="card-text">
+                            Informationen über mögliche Berufsfelder und Weiterbildungschancen nach dem Abschluss.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="service-card animate-fade-in delay-5">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+                        <h5 class="card-title">Lernmaterialien & Tipps</h5>
+                        <p class="card-text">
+                            Zusätzliche Ressourcen und nützliche Ratschläge für angehende und aktuelle Schüler.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-0">© 2024 Spengerguide. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script src="service.js"></script>
@@ -205,4 +268,5 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

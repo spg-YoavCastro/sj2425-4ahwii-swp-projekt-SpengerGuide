@@ -6,77 +6,333 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    /* Use Open Sans for general text, as per your other page's theme */
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F8F9FA; /* Light gray background */
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh; /* Ensure footer stays at the bottom */
 }
 
 .container {
     flex: 1;
 }
 
+/* Typography - Applying Pacifico to ALL headings */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.section-subtitle,
+.contact-card h5 {
+    font-family: 'Pacifico', cursive; /* Explicitly set Pacifico with cursive fallback */
+    color: #2C3E50; /* Darker blue-gray for headings */
+}
+
 h1 {
-    font-family: 'Pacifico', cursive;
+    font-size: 3.5rem; /* Larger for main title */
     text-align: center;
     margin: 30px 0;
 }
 
+/* Navbar Enhancements */
+.navbar {
+    background-color: #FFFFFF !important; /* White background */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    transition: all 0.3s ease-in-out;
+    padding: 0.8rem 0;
+}
+
+.navbar.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1020; /* Ensure it's above other content */
+}
+
+.navbar-nav .nav-link {
+    color: #5D6D7E; /* Link color */
+    font-weight: 500;
+    padding: 0.7rem 1.1rem;
+    margin: 0 5px;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #007BFF; /* Accent blue on hover/active */
+    background-color: rgba(0, 123, 255, 0.08); /* Light blue background on hover */
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Stronger shadow for dropdown */
+    border-radius: 0.75rem; /* More rounded */
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    padding: 0.8rem 1.5rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #EBF5FB; /* Very light blue on hover */
+    color: #007BFF;
+}
+
+/* Login/Logout Button Styling */
+.button {
+    background-color: #007BFF; /* Accent blue */
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Soft shadow */
+    cursor: pointer;
+    text-decoration: none; /* In case it's an <a> tag */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Subtle lift */
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Specific styling for logout button */
+#navbarLogoutElement {
+    background-color: #DC3545; /* Red for logout */
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+}
+
+#navbarLogoutElement:hover {
+    background-color: #C82333; /* Darker red */
+    box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* Section Titles */
+.section-title {
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding-bottom: 10px;
+    display: inline-block; /* To apply underline effect properly */
+    width: 100%; /* For centering purposes */
+    text-align: center;
+    font-family: 'Pacifico', cursive; /* Applied Pacifico */
+    font-size: 3.5rem; /* Larger for main page title */
+    color: #2C3E50;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 80px; /* Wider underline */
+    height: 5px;
+    background-color: #007BFF;
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    font-family: 'Pacifico', cursive; /* Applied Pacifico */
+    font-size: 2.5rem; /* Smaller than main title, larger than card title */
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 10px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.section-subtitle::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 60px; /* Shorter underline for sub-title */
+    height: 4px;
+    background-color: #007BFF;
+    border-radius: 2px;
+}
+
+/* Contact Card Styling */
 .contact-card {
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 1);
-    background-color: white;
+    background-color: #FFFFFF;
+    border: none; /* Remove default border */
+    border-radius: 1rem; /* More rounded corners */
+    padding: 2.5rem; /* Increased padding */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Modern, soft shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure cards in a row have equal height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content */
 }
+
+.contact-card:hover {
+    transform: translateY(-8px); /* More pronounced lift on hover */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
 .contact-card h5 {
-    color: #000000;
+    font-family: 'Pacifico', cursive; /* Applied Pacifico */
+    font-size: 1.8rem;
+    font-weight: 700; /* Pacifico is a display font, so this might not have a huge effect */
+    margin-bottom: 0.5rem;
 }
-.navbar .btn {
+
+.contact-card p {
+    color: #5D6D7E; /* Medium gray for text */
+    font-size: 1rem;
+    margin-bottom: 0.2rem; /* Reduce spacing between text lines */
+    font-family: 'Open Sans', sans-serif; /* Ensure body text is Open Sans */
+}
+
+.contact-card .card-subtitle {
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: #777 !important; /* Ensure muted text color */
+    font-family: 'Open Sans', sans-serif; /* Ensure body text is Open Sans */
+}
+
+.contact-card hr {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+}
+
+.contact-card .card-text i {
+    color: #007BFF; /* Accent color for icons */
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+.contact-card .fw-bold {
+    font-size: 1.05rem; /* Slightly larger email text */
+    color: #34495E;
+    font-family: 'Open Sans', sans-serif; /* Ensure body text is Open Sans */
+}
+
+/* Login Status Div */
+.login-status {
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #28A745; /* Green for logged in */
+    background-color: rgba(40, 167, 69, 0.1); /* Light green background */
+    padding: 0.5rem 1rem;
+    border-radius: 25px; /* Pill shape */
+    margin-right: 15px; /* Spacing from other navbar items */
+    font-family: 'Open Sans', sans-serif; /* Ensure Open Sans */
+}
+
+.login-status i {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #2C3E50 !important; /* Dark blue-gray */
+    padding: 30px 0;
+    color: #ECF0F1; /* Light gray text */
+    margin-top: 50px; /* Space from main content */
+    border-top: 5px solid #007BFF; /* Accent line */
+    font-family: 'Open Sans', sans-serif; /* Ensure Open Sans */
+}
+
+.footer p {
+    margin-bottom: 0.5rem;
     font-size: 0.9rem;
 }
-.bgnav {
-    background-color: white;
+
+.social-icons a {
+    color: #ECF0F1;
+    font-size: 1.5rem;
+    margin: 0 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-footer {
-    background-color: #f8f9fa;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: auto;
+.social-icons a:hover {
+    color: #007BFF; /* Primary blue on hover */
+    transform: translateY(-3px);
 }
 
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+    opacity: 0; /* Start hidden */
+}
+
+/* Add delays for staggered animation */
+.animate-fade-in.delay-1 { animation-delay: 0.1s; }
+.animate-fade-in.delay-2 { animation-delay: 0.2s; }
+.animate-fade-in.delay-3 { animation-delay: 0.3s; }
+.animate-fade-in.delay-4 { animation-delay: 0.4s; }
+
+/* Media Queries for Responsiveness */
 @media (max-width: 992px) {
-    .container {
-        max-width: 95%;
+    .section-title {
+        font-size: 2.8rem;
     }
-}
-
-@media (max-width: 300px) {
+    .section-subtitle {
+        font-size: 2rem;
+    }
     .contact-card {
-        font-size: 12px;
-        padding: 10px;
+        padding: 1.8rem;
     }
-
     .contact-card h5 {
-        font-size: 14px;
-    }
-
-    .contact-card p {
-        font-size: 12px;
+        font-size: 1.5rem;
     }
 }
 
-@media (max-width: 215px) {
-   .contact-card {
-        font-size: 10px;
-        padding: 8px;
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2.5rem;
     }
-
-    .contact-card h5 {
-        font-size: 12px;
+    .section-subtitle {
+        font-size: 1.8rem;
     }
-
-    .contact-card p {
-        font-size: 10px;
+    .contact-card {
+        margin-bottom: 20px; /* Restore some margin for smaller screens */
     }
 }
 
-
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .section-subtitle {
+        font-size: 1.6rem;
+    }
+    .contact-card {
+        padding: 1.5rem;
+    }
+    .contact-card h5 {
+        font-size: 1.3rem;
+    }
+    .contact-card p {
+        font-size: 0.95rem;
+    }
+}
