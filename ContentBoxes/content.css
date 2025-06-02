@@ -372,6 +372,10 @@ main {
         font-size: 0.9em;
     }
 
+    .cont-header {
+        width: 100%;
+    }
+
     .curriculum-points,
     .student-feedback-section {
         font-size: 0.9em;
@@ -386,23 +390,29 @@ main {
         font-size: 1em;
         padding: 0 10px;
     }
-}
 
-@media (max-width: 769px) {
-    .cont-title {
+    .feedback-heading {
         font-size: 1em;
     }
 
-    .toggle-icon {
-        font-size: 1.2em;
+    .preview p {
+        font-size: 15px;
     }
 
-    .extra-content {
-        font-size: 0.9em;
+    .preview {
+        /* padding-left: 2px;
+        padding-right: 2px; */
     }
 
-    .cont-header {
-        width: 100%;
+    .container {
+        padding: 0px;
     }
 }
+
+@media (max-width: 990px) {
+    #navbarStartLink {
+        margin-top: 10px;
+    }
+}
+
 

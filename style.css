@@ -153,6 +153,7 @@ img {
 .arrows:last-of-type {
     right: -50px;
 }
+
 /* Navbar and Footer */
 .navbar {
     transition: background-color 0.5s ease;
@@ -210,6 +211,11 @@ footer {
     #headerLogoImg {
         display: block;
     }
+
+    #navbarStartLink {
+        margin-top: 10px;
+    }
+
 }
 
 
@@ -281,11 +287,11 @@ footer {
     padding: 0.8rem 0;
 }
 
-.navbar.sticky-top {
+/* .navbar.sticky-top {
     position: sticky;
     top: 0;
-    z-index: 1020; /* Ensure it's above other content */
-}
+    z-index: 1020; /* Ensure it's above other content
+} */
 
 .navbar-nav .nav-link {
     color: #5D6D7E; /* Link color */

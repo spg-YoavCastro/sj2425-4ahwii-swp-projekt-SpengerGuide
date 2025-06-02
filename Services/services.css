@@ -391,3 +391,9 @@ h1 { /* Used for the main page title within the hero section */
         padding: 60px 0;
     }
 }
+
+@media (max-width: 990px) {
+    #navbarStartLink {
+        margin-top: 10px;
+    }
+}
