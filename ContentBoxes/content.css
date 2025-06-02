@@ -106,6 +106,14 @@ h1 {
     font-size: 1.25em; /* Slightly larger title */
     color: #333;
     flex-grow: 1; /* Allow title to take up available space */
+    white-space: nowrap; /* verhindert Zeilenumbruch */
+
+}
+
+.cont-header {  
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Toggle Icon */
@@ -113,6 +121,7 @@ h1 {
     font-size: 1.5em; /* Larger icon */
     color: #007bff; /* Blue color for icon */
     transition: transform 0.3s ease;
+    padding-left: 15px;
 }
 
 .cont.open .toggle-icon {
@@ -129,6 +138,7 @@ h1 {
     border-top: 1px solid #f0f0f0; /* Light separator line */
     font-weight: normal;
     color: #444;
+    /* padding-left: 10px; */
 }
 
 .cont.open .extra-content {
@@ -339,3 +349,60 @@ footer {
 main {
     flex-grow: 1;
 }
+
+@media (max-width: 769px) {
+    .cont {
+        flex-direction: column;  
+        align-items: flex-start; 
+        padding: 15px 18px;
+    }
+
+    .cont-title {
+        font-size: 1em; 
+        margin-bottom: 10px; 
+        white-space: normal; 
+    }
+
+    .toggle-icon {
+        font-size: 1.2em;
+        align-self: flex-end;
+    }
+
+    .extra-content {
+        font-size: 0.9em;
+    }
+
+    .curriculum-points,
+    .student-feedback-section {
+        font-size: 0.9em;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .intro-bold {
+        font-size: 1em;
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 769px) {
+    .cont-title {
+        font-size: 1em;
+    }
+
+    .toggle-icon {
+        font-size: 1.2em;
+    }
+
+    .extra-content {
+        font-size: 0.9em;
+    }
+
+    .cont-header {
+        width: 100%;
+    }
+}
+
