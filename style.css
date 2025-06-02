@@ -123,6 +123,10 @@ img {
     opacity: 1;
 }
 
+h1 {
+    font-family: 'Pacifico';
+}
+
 .arrows {
     font-size: 60px;
     cursor: pointer;
