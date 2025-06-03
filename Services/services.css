@@ -70,7 +70,7 @@ h1 { /* Used for the main page title within the hero section */
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 

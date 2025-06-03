@@ -70,7 +70,7 @@ h1 {
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -349,8 +349,26 @@ h1 {
     }
 }
 
+@media (max-width: 275px) {
+    #eMailP {
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 265px) {
     #eMailP {
-        font-size: 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 245px) {
+    #eMailP {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 210px) {
+    #eMailP {
+        font-size: 9px;
     }
 }

@@ -1,12 +1,29 @@
 footer {
-    position: fixed;
-    bottom: 0;
+    /* position: fixed; */
+    /* bottom: 0;
     left: 0;
     width: 100%;
     background-color: #f8f9fa;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px 0; */
+    background-color: #2C3E50 !important;
+    padding: 30px 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    /* color: #ECF0F1 !important; */
+    margin-top: 50px;
+    border-top: 5px solid #007BFF;
+    font-family: 'Open Sans', sans-serif;
 }
+
+.mb-0 {
+    color: #ECF0F1;
+}
+
+p {
+    margin-bottom: 0px !important;
+}
+
 h1 {
     font-family: 'Pacifico', cursive;
     text-align: center;
@@ -114,7 +131,7 @@ p {
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -215,5 +232,23 @@ main {
 @media (max-width: 990px) {
     #navbarStartLink {
         margin-top: 10px;
+    }
+}
+
+@media (max-width: 300px) {
+    #btnQuestion {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 510px) {
+    h2 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 325px) {
+    h2 {
+        font-size: 22px;
     }
 }

@@ -181,10 +181,18 @@ h1 {
 }
 
 footer {
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa;
     padding: 20px;
     text-align: center;
-    color: #333;
+    color: #333; */
+    background-color: #2C3E50 !important;
+    padding: 30px 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: #ECF0F1;
+    /* margin-top: 50px; */
+    border-top: 5px solid #007BFF;
+    font-family: 'Open Sans', sans-serif;
 }
 .Bilder
 {
@@ -320,7 +328,7 @@ footer {
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -411,6 +419,10 @@ footer {
     color: rgba(255, 255, 255, 0.9);
     max-width: 800px;
     margin: 0 auto;
+}
+
+p {
+    margin-bottom: 0px !important;
 }
 
 /* Main Content Styling */
