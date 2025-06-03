@@ -14,82 +14,158 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <script>
-        function updateUI(data) {
-            const loginBtn = document.getElementById('navbarLoginElement');
-            const logoutBtn = document.getElementById('navbarLogoutElement');
-
-            if (data.loggedIn && data.user) {
-                // Logged in
-                localStorage.setItem('isLoggedIn', 'true');
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (logoutBtn) {
-                    logoutBtn.style.display = 'block';
-                    logoutBtn.onclick = function (e) {
-                        e.preventDefault();
-                        performLogout();
-                    };
-                }
-
-                updateStatusDisplay(`Eingeloggt als ${data.user.name}`);
-            } else {
-                // Logged out
-                localStorage.removeItem('isLoggedIn');
-                if (loginBtn) {
-                    loginBtn.style.display = 'block';
-                    loginBtn.onclick = function (e) {
-                        e.preventDefault();
-                        window.location.href = '/Spengerguide/Login/login.html';
-                    };
-                }
-                if (logoutBtn) logoutBtn.style.display = 'none';
-                removeStatusDisplay();
+        // Einheitliche Login-Logik für gesamte Website
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Session-Status prüfen
+            function checkLoginStatus() {
+                fetch('/Spengerguide/Login/session_status.php', {
+                        credentials: 'include' // Wichtig für Cookies
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network error');
+                        return response.json();
+                    })
+                    .then(data => {
+                        updateUI(data);
+                    })
+                    .catch(error => console.error("Login-Check failed:", error));
             }
-        }
 
-        // Separate Logout function
-        function performLogout() {
-            fetch('/Spengerguide/Login/logout.php', {
-                method: 'POST',
-                credentials: 'include'
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Logout failed');
-                    return response.json();
-                })
-                .then(() => {
+            // 2. UI aktualisieren
+            function updateUI(data) {
+                const loginBtn = document.getElementById('navbarLoginElement');
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                // The parent element for prepending the status, as defined in your provided working code's JS
+                const statusParent = document.querySelector('.d-flex').parentNode;
+
+                if (data.loggedIn && data.user) {
+                    // Eingeloggt
+                    localStorage.setItem('isLoggedIn', 'true');
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'block';
+
+                    updateStatusDisplay(`Eingeloggt als ${data.user.name}`, statusParent);
+                } else {
+                    // Ausgeloggt
                     localStorage.removeItem('isLoggedIn');
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error("Logout error:", error);
-                    alert('Abmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
-                });
-        }
+                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    removeStatusDisplay();
+                }
+            }
+
+            // 3. Status-Anzeige erstellen/aktualisieren
+            function updateStatusDisplay(text, parentElement) {
+                let statusDiv = document.getElementById('loginStatusDiv');
+                if (!statusDiv) {
+                    statusDiv = document.createElement('div');
+                    statusDiv.id = 'loginStatusDiv';
+                    statusDiv.className = 'login-status'; // Use the class from your provided code
+                    
+                    if (parentElement) {
+                        // Prepends to the parent of the login/logout buttons' .d-flex container
+                        parentElement.prepend(statusDiv);
+                    }
+                }
+                statusDiv.innerHTML = `
+                    <span style="color: green; margin-right: 15px;">
+                        <i class="bi bi-person-check"></i> ${text}
+                    </span>
+                `;
+            }
+
+            // 4. Status-Anzeige entfernen
+            function removeStatusDisplay() {
+                const statusDiv = document.getElementById('loginStatusDiv');
+                if (statusDiv) statusDiv.remove();
+            }
+
+            // 5. Event-Handler für Buttons
+            function setupEventListeners() {
+                // Login-Button
+                const loginBtn = document.getElementById('navbarLoginElement');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', () => {
+                        window.location.href = '/Spengerguide/Login/login.html';
+                    });
+                }
+
+                // Logout-Button
+                const logoutBtn = document.getElementById('navbarLogoutElement');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => {
+                        fetch('/Spengerguide/Login/logout.php', {
+                                method: 'POST',
+                                credentials: 'include'
+                            })
+                            .then(() => {
+                                localStorage.removeItem('isLoggedIn');
+                                window.location.reload();
+                            })
+                            .catch(error => console.error("Logout failed:", error));
+                    });
+                }
+            }
+
+            // Initialisierung
+            checkLoginStatus();
+            setupEventListeners();
+
+            // Alle 2 Minuten Status prüfen
+            setInterval(checkLoginStatus, 120000);
+        });
     </script>
 
     <style>
+        /* This style block should mostly be what's in your loginBtn.css,
+           but we'll keep it here for direct visibility based on your request. */
         .login-status {
             display: flex;
             align-items: center;
-            padding: 0 15px;
+            padding: 0 15px; /* This padding should create the space you see */
             font-size: 0.9rem;
+            white-space: nowrap; /* Prevent text wrapping */
         }
+        
+        /* Ensure the 'button' class from loginBtn.css is actually applied and visible */
+        /* If loginBtn.css already defines .button, these specific rules might be redundant
+           or used for slight overrides. */
+        /* Let's assume loginBtn.css gives it the rounded shape and red background. */
+        /* If not, you might need to add: */
+        /*
+        .button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px; // Or a higher value for a pill shape
+            padding: 8px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px; // Example min-width for consistent size
+        }
+        .button:hover {
+            background-color: #c82333;
+        }
+        */
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <div class="d-flex">
-                <button id="navbarLoginElement" class="button me-2">
+            <div class="d-flex align-items-center">
+                <button id="navbarLoginElement" class="button" style="display: none;">
                     <span class="button-content">Login</span>
                 </button>
-                <button id="navbarLogoutElement" class="button me-2" style="display:none;">
+                <button id="navbarLogoutElement" class="button" style="display: none;">
                     <span class="button-content">Abmelden</span>
                 </button>
             </div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -139,7 +215,7 @@
             <div class="preview">
                 <p>
                     Die Absolventinnen und Absolventen des Ausbildungsschwerpunkts Animation sind Spezialistinnen und
-                    Spezialisten für die Konzeption, Planung, Gestaltung und Herstellung von medialen Produkten mit
+                    Spezialistinnen für die Konzeption, Planung, Gestaltung und Herstellung von medialen Produkten mit
                     Fokus auf Ton- und Videomaterial mit komplex bewegten Elementen der 2D- und 3D-Animation. Sie
                     können im Team komplexe analoge wie digitale Animationstechniken anwenden und verbinden,
                     Animationsprojekte hinsichtlich ihrer Dramaturgie vertonen, in einer Studioumgebung arbeiten und
@@ -189,7 +265,6 @@
                                     Zeichnen sind aber auch wichtig.</li>
                                 <li>Die Verteilung der Tests ist okay, aber mehr Feedback zu den kreativen Arbeiten wäre manchmal
                                     hilfreich.</li>
-                                <li>Manche wünschen sich klarere Aufgabenstellungen bei den ersten Kreativübungen.</li>
                             </ul>
                         </div>
                     </div>
@@ -219,7 +294,6 @@
                                     Animationsprojekte werden jetzt komplexer, das ist cool.</li>
                                 <li>Es gibt genug Praxisbezug, besonders in Medienproduktion. Manchmal fehlt aber die Zeit,
                                     alles auszuprobieren.</li>
-                                <li>Der Umgang mit der neuen Software ist am Anfang anstrengend, aber nach einer Weile wird es besser.</li>
                             </ul>
                         </div>
                     </div>
@@ -247,7 +321,6 @@
                                     ressourcenintensiv.</li>
                                 <li>Das Teamwork in größeren Projekten ist super, aber auch zeitaufwendig.</li>
                                 <li>Manchmal könnte die Theorie praxisnäher sein, vor allem bei Medienpraxis.</li>
-                                <li>Vertonung und Schnitt sind spannende neue Bereiche, die das Gesamtprojekt abrunden.</li>
                             </ul>
                         </div>
                     </div>
@@ -272,7 +345,6 @@
                                 <li>Die Arbeit an Kundenprojekten ist spannend und bereitet gut auf die Praxis vor.</li>
                                 <li>Automatisierung und Skripting sind neue Herausforderungen, die sehr nützlich sind.</li>
                                 <li>Die Arbeitsbelastung ist hoch, aber die Unterstützung durch Lehrer ist gut.</li>
-                                <li>Manche würden sich mehr Freiräume für eigene Projekte wünschen.</li>
                             </ul>
                         </div>
                     </div>
@@ -297,7 +369,6 @@
                                 <li>Das Abschlussprojekt fordert viel Einsatz, aber man kann zeigen, was man gelernt hat.</li>
                                 <li>Portfolioarbeit ist hilfreich für Bewerbungen.</li>
                                 <li>Die Praxisorientierung wird als sehr gut bewertet.</li>
-                                <li>Manche wünschen sich mehr Feedback während des Projekts.</li>
                             </ul>
                         </div>
                     </div>
