@@ -49,6 +49,7 @@ h1 {
     border-radius: 12px; /* Softer rounded corners */
     padding: 30px;
     margin-bottom: 40px;
+    margin-top: 30px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* More noticeable shadow */
     border: 1px solid #e0e0e0; /* Light border */
 }
@@ -106,6 +107,14 @@ h1 {
     font-size: 1.25em; /* Slightly larger title */
     color: #333;
     flex-grow: 1; /* Allow title to take up available space */
+    white-space: nowrap; /* verhindert Zeilenumbruch */
+
+}
+
+.cont-header {  
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Toggle Icon */
@@ -113,6 +122,7 @@ h1 {
     font-size: 1.5em; /* Larger icon */
     color: #007bff; /* Blue color for icon */
     transition: transform 0.3s ease;
+    padding-left: 15px;
 }
 
 .cont.open .toggle-icon {
@@ -129,6 +139,7 @@ h1 {
     border-top: 1px solid #f0f0f0; /* Light separator line */
     font-weight: normal;
     color: #444;
+    /* padding-left: 10px; */
 }
 
 .cont.open .extra-content {
@@ -178,12 +189,27 @@ h1 {
 
 /* Footer - already decent, position static is fine */
 footer {
-    position: static; /* As defined, works fine */
-    background-color: #f0f0f0; /* A bit darker than f8f9fa for contrast */
-    padding: 20px 0; /* More vertical padding */
+    /* position: static;
+    background-color: #f0f0f0;
+    padding: 20px 0;
     font-size: 0.9em;
     color: #666;
-    margin-top: 50px; /* More space before footer */
+    margin-top: 50px; */
+
+    background-color: #2C3E50 !important;
+    padding: 30px 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: #ECF0F1;
+    margin-top: 50px;
+    border-top: 5px solid #007BFF;
+    font-family: 'Open Sans', sans-serif;
+    padding-left: 6px;
+    padding-right: 6px;
+    }
+
+p {
+    margin-bottom: 0px !important;
 }
 
 /* Responsive adjustments */
@@ -229,7 +255,7 @@ footer {
 }
 
 .navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
+.navbar-nav .nav-link:active {
     color: #007BFF; /* Accent blue on hover/active */
     background-color: rgba(0, 123, 255, 0.08); /* Light blue background on hover */
 }
@@ -242,7 +268,7 @@ footer {
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -338,4 +364,125 @@ footer {
 /* Main Content Styling */
 main {
     flex-grow: 1;
+}
+
+@media (max-width: 769px) {
+    .cont {
+        flex-direction: column;  
+        align-items: flex-start; 
+        padding: 15px 18px;
+    }
+
+    .cont-title {
+        font-size: 1em; 
+        margin-bottom: 10px; 
+        white-space: normal; 
+    }
+
+    .toggle-icon {
+        font-size: 1.2em;
+        align-self: flex-end;
+    }
+
+    .extra-content {
+        font-size: 0.9em;
+    }
+
+    .cont-header {
+        width: 100%;
+    }
+
+    .curriculum-points,
+    .student-feedback-section {
+        font-size: 0.9em;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .intro-bold {
+        font-size: 1em;
+        padding: 0 10px;
+    }
+
+    .feedback-heading {
+        font-size: 1em;
+    }
+
+    .preview p {
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 0px;
+    }
+}
+
+@media (max-width: 990px) {
+    #navbarStartLink {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 370px) {
+    h1 {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 255px) {
+    h1 {
+        font-size: 20px;
+    }
+
+}
+
+
+/* hamburger menu icon in navbar -> turn into "X" when the menu is open (navbar.js) */
+.navbar-toggler-icon {
+    background: none !important;
+    width: 22px;
+    height: 18px;
+    position: relative;
+    display: inline-block;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon span {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+}
+
+.navbar-toggler-icon::before {
+    top: 0;
+}
+
+.navbar-toggler-icon span {
+    top: 8px;
+}
+
+.navbar-toggler-icon::after {
+    bottom: 0;
+}
+
+.navbar-toggler.open .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 8px;
+}
+
+.navbar-toggler.open .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 8px;
+    bottom: auto;
+}
+
+.navbar-toggler.open .navbar-toggler-icon span {
+    display: none;
 }

@@ -123,6 +123,10 @@ img {
     opacity: 1;
 }
 
+h1 {
+    font-family: 'Pacifico';
+}
+
 .arrows {
     font-size: 60px;
     cursor: pointer;
@@ -153,6 +157,7 @@ img {
 .arrows:last-of-type {
     right: -50px;
 }
+
 /* Navbar and Footer */
 .navbar {
     transition: background-color 0.5s ease;
@@ -176,10 +181,18 @@ img {
 }
 
 footer {
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa;
     padding: 20px;
     text-align: center;
-    color: #333;
+    color: #333; */
+    background-color: #2C3E50 !important;
+    padding: 30px 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: #ECF0F1;
+    /* margin-top: 50px; */
+    border-top: 5px solid #007BFF;
+    font-family: 'Open Sans', sans-serif;
 }
 .Bilder
 {
@@ -210,6 +223,11 @@ footer {
     #headerLogoImg {
         display: block;
     }
+
+    #navbarStartLink {
+        margin-top: 10px;
+    }
+
 }
 
 
@@ -281,11 +299,11 @@ footer {
     padding: 0.8rem 0;
 }
 
-.navbar.sticky-top {
+/* .navbar.sticky-top {
     position: sticky;
     top: 0;
-    z-index: 1020; /* Ensure it's above other content */
-}
+    z-index: 1020; /* Ensure it's above other content
+} */
 
 .navbar-nav .nav-link {
     color: #5D6D7E; /* Link color */
@@ -310,7 +328,7 @@ footer {
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -403,7 +421,58 @@ footer {
     margin: 0 auto;
 }
 
+p {
+    margin-bottom: 0px !important;
+}
+
 /* Main Content Styling */
 main {
     flex-grow: 1;
+}
+
+/* hamburger menu icon in navbar -> turn into "X" when the menu is open (navbar.js) */
+.navbar-toggler-icon {
+    background: none !important;
+    width: 22px;
+    height: 18px;
+    position: relative;
+    display: inline-block;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon span {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+}
+
+.navbar-toggler-icon::before {
+    top: 0;
+}
+
+.navbar-toggler-icon span {
+    top: 8px;
+}
+
+.navbar-toggler-icon::after {
+    bottom: 0;
+}
+
+.navbar-toggler.open .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 8px;
+}
+
+.navbar-toggler.open .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 8px;
+    bottom: auto;
+}
+
+.navbar-toggler.open .navbar-toggler-icon span {
+    display: none;
 }
