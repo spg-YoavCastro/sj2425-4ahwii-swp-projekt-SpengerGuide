@@ -70,7 +70,7 @@ h1 {
 }
 
 .dropdown-item {
-    padding: 0.8rem 1.5rem;
+    /* padding: 0.8rem 1.5rem; */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -335,4 +335,87 @@ h1 {
     .contact-card p {
         font-size: 0.95rem;
     }
+}
+
+@media (max-width: 990px) {
+    #navbarStartLink {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 320px) {
+    #eMailP {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 275px) {
+    #eMailP {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 265px) {
+    #eMailP {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 245px) {
+    #eMailP {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 210px) {
+    #eMailP {
+        font-size: 9px;
+    }
+}
+
+/* hamburger menu icon in navbar -> turn into "X" when the menu is open (navbar.js) */
+.navbar-toggler-icon {
+    background: none !important;
+    width: 22px;
+    height: 18px;
+    position: relative;
+    display: inline-block;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon span {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+}
+
+.navbar-toggler-icon::before {
+    top: 0;
+}
+
+.navbar-toggler-icon span {
+    top: 8px;
+}
+
+.navbar-toggler-icon::after {
+    bottom: 0;
+}
+
+.navbar-toggler.open .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 8px;
+}
+
+.navbar-toggler.open .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 8px;
+    bottom: auto;
+}
+
+.navbar-toggler.open .navbar-toggler-icon span {
+    display: none;
 }

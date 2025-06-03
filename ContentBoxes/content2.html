@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informatik</title>
-    <link rel="stylesheet" href="content.css">
     <link rel="stylesheet" href="../loginBtn.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="content.css">
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -128,7 +128,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Start</a>
+                        <a class="nav-link" href="../index.html" id="navbarStartLink">Start</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="departmentsDropdown" role="button"
@@ -164,35 +164,37 @@
         <div class="container">
             <h1>Informatik</h1>
             <p class="intro-bold">
-                Das ist die Abteilung Informatik der Höheren Lehranstalt für Medien. Hier finden Sie konkrete Angaben
+                Das ist die Abteilung Informatik der Höheren Lehranstalt für Medien. Hier findest du konkrete Angaben
                 zu den Lehrinhalten der einzelnen Jahrgänge gemäß Lehrplan sowie Einblicke aus der Schülerschaft.
             </p>
             <div class="preview">
                 <p>
-                    Die Absolventinnen und Absolventen der Höheren Lehranstalt für Informatik können **ingenieurmäßige
-                    Tätigkeiten** auf dem Gebiet der **Applikations- und Softwareentwicklung, der
+                    Die Absolventinnen und Absolventen der Höheren Lehranstalt für Informatik können ingenieurmäßige
+                    Tätigkeiten auf dem Gebiet der Applikations- und Softwareentwicklung, der
                     Informationssystemorganisation, der System- und Anforderungsanalytik, des Applikationsdesigns,
                     des Datenbankdesigns und der Datenbankprogrammierung, der Anwendungs- und Systemprogrammierung,
                     des Software Engineerings, der Systemberatung, des Projektmanagements, der Datenschutz- und
                     Datensicherheitstechnik, der Systemadministration, des Systemmanagements sowie des Informatik-
-                    Trainings** ausführen. Sie sind auch besonders zur Aufnahme einer **adäquaten selbstständigen
-                    unternehmerischen Tätigkeit** ausgebildet.
+                    Trainings ausführen. Sie sind auch besonders zur Aufnahme einer adäquaten selbstständigen
+                    unternehmerischen Tätigkeit ausgebildet.
                 </p>
                 <div class="department-feedback-summary">
                     <h5 class="feedback-heading">
                         Das sagen Schüler:innen über die Abteilung Informatik (Zusammenfassung fiktiver Umfrageergebnisse):
                     </h5>
                     <p>
-                        Die Informatik-Abteilung wird für ihre **umfassende Ausbildung** in **Softwareentwicklung und Netzwerktechnik** sehr geschätzt. Besonders positiv hervorgehoben werden die **praxisnahen Projekte** und die **fundierte Vorbereitung** auf die IT-Branche. Viele schätzen die **tiefe Einarbeitung in verschiedene Programmiersprachen und Datenbanken**.
-                        Herausfordernd kann die **hohe Lernintensität**, insbesondere in den höheren Jahrgängen, empfunden werden. Ein Wunsch ist die **stärkere Betonung von aktuellen Trends** wie Machine Learning und Cloud Computing in den frühen Jahren. Die **Unterstützung durch spezialisierte Lehrkräfte** bei komplexen Themen wird als exzellent bewertet.
+                        Die Informatik-Abteilung wird für ihre umfassende Ausbildung in Softwareentwicklung und Netzwerktechnik sehr geschätzt. Besonders positiv hervorgehoben werden die praxisnahen Projekte und die fundierte Vorbereitung auf die IT-Branche. Viele schätzen die tiefe Einarbeitung in verschiedene Programmiersprachen und Datenbanken.
+                        Herausfordernd kann die hohe Lernintensität, insbesondere in den höheren Jahrgängen, empfunden werden. Ein Wunsch ist die stärkere Betonung von aktuellen Trends wie Machine Learning und Cloud Computing in den frühen Jahren. Die Unterstützung durch spezialisierte Lehrkräfte bei komplexen Themen wird als exzellent bewertet.
                     </p>
                 </div>
             </div>
 
             <div class="content-inhalt">
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">1. Jahrgang</div>
-                    <i class="bi bi-chevron-down toggle-icon"></i>
+                    <div class="cont-header">
+                        <div class="cont-title">1. Jahrgang</div>
+                        <i class="bi bi-chevron-down toggle-icon"></i>
+                    </div>
                     <div class="extra-content">
                         <p class="curriculum-points">
                             <b>Lehrplan-Schwerpunkte:</b><br />
@@ -203,8 +205,8 @@
                         <div class="student-feedback-section">
                             <h6>Einblicke von Schüler:innen des 1. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
                             <ul>
-                                <li>Der Einstieg in die **Programmierung** ist spannend, aber auch herausfordernd für Anfänger.</li>
-                                <li>Die praktischen Übungen in **Computerarchitektur** helfen sehr, die Hardware besser zu verstehen.</li>
+                                <li>Der Einstieg in die Programmierung ist spannend, aber auch herausfordernd für Anfänger.</li>
+                                <li>Die praktischen Übungen in Computerarchitektur helfen sehr, die Hardware besser zu verstehen.</li>
                                 <li>Manchmal ist die Menge an neuen Informationen überwältigend, aber die Lehrer sind hilfsbereit.</li>
                                 <li>Mehr praktische Projekte in Gruppen wären wünschenswert, um das Gelernte anzuwenden.</li>
                             </ul>
@@ -213,8 +215,10 @@
                 </div>
 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">2. Jahrgang</div>
-                    <i class="bi bi-chevron-down toggle-icon"></i>
+                    <div class="cont-header">
+                        <div class="cont-title">2. Jahrgang</div>
+                        <i class="bi bi-chevron-down toggle-icon"></i>
+                    </div>
                     <div class="extra-content">
                         <p class="curriculum-points">
                             <b>Lehrplan-Schwerpunkte:</b><br />
@@ -227,9 +231,9 @@
                         <div class="student-feedback-section">
                             <h6>Einblicke von Schüler:innen des 2. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
                             <ul>
-                                <li>Die Einführung in **Webprogrammierung** und **Netzwerksysteme** ist sehr interessant und praxisrelevant.</li>
-                                <li>**Datenstrukturen** sind anspruchsvoll, aber wichtig für das Verständnis komplexer Software.</li>
-                                <li>Die Übungen im **Labor** sind eine tolle Möglichkeit, das Gelernte direkt umzusetzen.</li>
+                                <li>Die Einführung in Webprogrammierung und Netzwerksysteme ist sehr interessant und praxisrelevant.</li>
+                                <li>Datenstrukturen sind anspruchsvoll, aber wichtig für das Verständnis komplexer Software.</li>
+                                <li>Die Übungen im Labor sind eine tolle Möglichkeit, das Gelernte direkt umzusetzen.</li>
                                 <li>Es wäre hilfreich, wenn mehr Zeit für die Vertiefung von speziellen Themen wie Cyber Security zur Verfügung stünde.</li>
                             </ul>
                         </div>
@@ -237,8 +241,10 @@
                 </div>
 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">3. Jahrgang</div>
-                    <i class="bi bi-chevron-down toggle-icon"></i>
+                   <div class="cont-header">
+                        <div class="cont-title">3. Jahrgang</div>
+                        <i class="bi bi-chevron-down toggle-icon"></i>
+                    </div>
                     <div class="extra-content">
                         <p class="curriculum-points">
                             <b>Lehrplan-Schwerpunkte:</b><br />
@@ -251,9 +257,9 @@
                         <div class="student-feedback-section">
                             <h6>Einblicke von Schüler:innen des 3. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
                             <ul>
-                                <li>Die Arbeit an **Benutzeroberflächen** macht viel Spaß und ist visuell ansprechend.</li>
-                                <li>**Projektentwicklung** ist sehr realitätsnah, aber auch arbeitsintensiv.</li>
-                                <li>Die Themen **Datensicherheit** und **Cyber Security** sind extrem relevant und gut vermittelt.</li>
+                                <li>Die Arbeit an Benutzeroberflächen macht viel Spaß und ist visuell ansprechend.</li>
+                                <li>Projektentwicklung ist sehr realitätsnah, aber auch arbeitsintensiv.</li>
+                                <li>Die Themen Datensicherheit und Cyber Security sind extrem relevant und gut vermittelt.</li>
                                 <li>Einige wünschen sich mehr aktuelle Beispiele und Fallstudien aus der Industrie.</li>
                             </ul>
                         </div>
@@ -261,8 +267,10 @@
                 </div>
 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">4. Jahrgang</div>
-                    <i class="bi bi-chevron-down toggle-icon"></i>
+                   <div class="cont-header">
+                        <div class="cont-title">4. Jahrgang</div>
+                        <i class="bi bi-chevron-down toggle-icon"></i>
+                    </div>
                     <div class="extra-content">
                         <p class="curriculum-points">
                             <b>Lehrplan-Schwerpunkte:</b><br />
@@ -276,8 +284,8 @@
                         <div class="student-feedback-section">
                             <h6>Einblicke von Schüler:innen des 4. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
                             <ul>
-                                <li>**Data Science und KI** sind absolute Highlights und sehr zukunftsträchtig.</li>
-                                <li>Die Projekte in **Systemplanung** werden sehr groß und fordernd, aber man lernt enorm viel über Teamwork.</li>
+                                <li>Data Science und KI sind absolute Highlights und sehr zukunftsträchtig.</li>
+                                <li>Die Projekte in Systemplanung werden sehr groß und fordernd, aber man lernt enorm viel über Teamwork.</li>
                                 <li>Das Testen von Software ist essenziell und wird hier detailliert behandelt.</li>
                                 <li>Manchmal fühlt man sich vom Umfang der Themen erschlagen, aber die Lehrer sind sehr unterstützend.</li>
                             </ul>
@@ -286,8 +294,10 @@
                 </div>
 
                 <div class="cont" onclick="toggleContent(this)">
-                    <div class="cont-title">5. Jahrgang</div>
-                    <i class="bi bi-chevron-down toggle-icon"></i>
+                   <div class="cont-header">
+                        <div class="cont-title">5. Jahrgang</div>
+                        <i class="bi bi-chevron-down toggle-icon"></i>
+                    </div>
                     <div class="extra-content">
                         <p class="curriculum-points">
                             <b>Lehrplan-Schwerpunkte:</b><br />
@@ -296,12 +306,12 @@
                             <b>Netzwerksysteme und Cyber Security (2 Std.):</b> Praxisorientierte Anwendungen in Netzwerk- und Systemsicherheit.<br />
                             <b>Webprogrammierung und Mobile Computing (2 Std.):</b> Finale Projekte in Web- und Mobile-Entwicklung.<br />
                             <b>Data Science und Artificial Intelligence (2 Std.):</b> Projektarbeit und Anwendung von KI-Methoden.<br />
-                            <b>Systemplanung und Projektentwicklung (7 Std., davon 5 Übungen):</b> **Diplomprojekt** – eigenständige Realisierung eines umfassenden IT-Projekts von der Konzeption bis zur Implementierung und Präsentation.
+                            <b>Systemplanung und Projektentwicklung (7 Std., davon 5 Übungen):</b> Diplomprojekt – eigenständige Realisierung eines umfassenden IT-Projekts von der Konzeption bis zur Implementierung und Präsentation.
                         </p>
                         <div class="student-feedback-section">
                             <h6>Einblicke von Schüler:innen des 5. Jahrgangs (Fiktive Umfrageergebnisse):</h6>
                             <ul>
-                                <li>Das **Diplomprojekt** ist der Höhepunkt der Ausbildung – man kann zeigen, was man alles gelernt hat!</li>
+                                <li>Das Diplomprojekt ist der Höhepunkt der Ausbildung – man kann zeigen, was man alles gelernt hat!</li>
                                 <li>Die Vorbereitung auf die Praxis ist hervorragend, besonders durch die Arbeit an realen Problemen.</li>
                                 <li>Die Intensität ist sehr hoch, aber die Erfolgserlebnisse sind es wert.</li>
                                 <li>Mehr Möglichkeiten zur Vertiefung individueller Interessen innerhalb des Lehrplans wären super.</li>
@@ -313,14 +323,15 @@
         </div>
     </section>
 
-    <footer class="bg-light text-center py-4">
-        <p>© 2024 Spengerguide. All Rights Reserved.</p>
+    <footer class="footer bg-dark text-white text-center py-4">
+        <p>© 2024 Spengerguide. Alle Rechte vorbehalten.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="content.js"></script>
+    <script src="../navbar.js"></script>
 </body>
 
 </html>
