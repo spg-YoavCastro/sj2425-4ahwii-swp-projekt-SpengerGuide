@@ -342,3 +342,15 @@ h1 {
         margin-top: 10px;
     }
 }
+
+@media (max-width: 320px) {
+    #eMailP {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 265px) {
+    #eMailP {
+        font-size: 12px;
+    }
+}
