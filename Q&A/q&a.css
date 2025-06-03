@@ -20,6 +20,10 @@ footer {
     color: #000000;
 }
 
+#footerQAfont {
+    color: white;
+}
+
 p {
     margin-bottom: 0px !important;
 }
